@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Http\Rules;
 
-use Illuminate\Contracts\Validation\Factory;
 use Illuminate\Contracts\Validation\Rule;
+use Illuminate\Contracts\Validation\Factory;
 
 class RedirectRule implements Rule
 {

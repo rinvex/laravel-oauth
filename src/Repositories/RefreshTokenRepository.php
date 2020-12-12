@@ -6,7 +6,6 @@ namespace Rinvex\OAuth\Repositories;
 
 use Rinvex\OAuth\Bridge\RefreshToken;
 use Illuminate\Contracts\Events\Dispatcher;
-use Rinvex\OAuth\Events\RefreshTokenCreated;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;
 
