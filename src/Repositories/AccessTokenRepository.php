@@ -7,9 +7,8 @@ namespace Rinvex\OAuth\Repositories;
 use DateTime;
 use Rinvex\OAuth\Bridge\AccessToken;
 use Illuminate\Contracts\Events\Dispatcher;
-use Rinvex\OAuth\Events\AccessTokenCreated;
-use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
+use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 use League\OAuth2\Server\Repositories\AccessTokenRepositoryInterface;
 
 class AccessTokenRepository implements AccessTokenRepositoryInterface

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Rinvex\OAuth\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Rinvex\OAuth\Factories\ApiTokenCookieFactory;
 
 class CreateFreshApiToken

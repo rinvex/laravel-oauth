@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Rinvex\OAuth\Http\Middleware;
 
 use Closure;
+use Nyholm\Psr7\Factory\Psr17Factory;
+use League\OAuth2\Server\ResourceServer;
 use Illuminate\Auth\AuthenticationException;
 use League\OAuth2\Server\Exception\OAuthServerException;
-use League\OAuth2\Server\ResourceServer;
-use Nyholm\Psr7\Factory\Psr17Factory;
 use Symfony\Bridge\PsrHttpMessage\Factory\PsrHttpFactory;
 
 abstract class CheckCredentials

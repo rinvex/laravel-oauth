@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Factories;
 
-use Rinvex\OAuth\Models\Client;
 use RuntimeException;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7\ServerRequest;
+use Rinvex\OAuth\Models\Client;
 use Lcobucci\JWT\Parser as JwtParser;
 use Illuminate\Database\Eloquent\Model;
+use Rinvex\OAuth\PersonalAccessTokenResult;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
-use Rinvex\OAuth\PersonalAccessTokenResult;
 
 class PersonalAccessTokenFactory
 {
