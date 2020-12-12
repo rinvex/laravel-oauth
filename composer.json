@@ -1,0 +1,90 @@
+{
+    "name": "rinvex/laravel-oauth",
+    "description": "Rinvex OAuth provides OAuth2 server support to Laravel.",
+    "type": "library",
+    "keywords": [
+        "laravel",
+        "rinvex",
+        "oauth",
+        "api"
+    ],
+    "license": "MIT",
+    "homepage": "https://rinvex.com",
+    "support": {
+        "email": "help@rinvex.com",
+        "issues": "https://github.com/rinvex/laravel-oauth/issues",
+        "source": "https://github.com/rinvex/laravel-oauth",
+        "docs": "https://github.com/rinvex/laravel-oauth/blob/master/README.md"
+    },
+    "authors": [
+        {
+            "name": "Taylor Otwell",
+            "email": "taylor@laravel.com"
+        },
+        {
+            "name": "Rinvex LLC",
+            "homepage": "https://rinvex.com",
+            "email": "help@rinvex.com"
+        },
+        {
+            "name": "Abdelrahman Omran",
+            "homepage": "https://omranic.com",
+            "email": "me@omranic.com",
+            "role": "Project Lead"
+        },
+        {
+            "name": "The Generous Laravel Community",
+            "homepage": "https://github.com/rinvex/laravel-oauth/contributors"
+        }
+    ],
+    "require": {
+        "php": "^7.4.0",
+        "ext-json": "*",
+        "firebase/php-jwt": "^5.0",
+        "illuminate/auth": "^8.2",
+        "illuminate/console": "^8.2",
+        "illuminate/container": "^8.2",
+        "illuminate/contracts": "^8.2",
+        "illuminate/cookie": "^8.2",
+        "illuminate/database": "^8.2",
+        "illuminate/encryption": "^8.2",
+        "illuminate/http": "^8.2",
+        "illuminate/support": "^8.2",
+        "league/oauth2-server": "^8.1",
+        "nyholm/psr7": "^1.3",
+        "phpseclib/phpseclib": "^2.0",
+        "symfony/psr-http-message-bridge": "^2.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rinvex\\OAuth\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Rinvex\\OAuth\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true,
+        "preferred-install": "dist",
+        "optimize-autoloader": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Rinvex\\OAuth\\Providers\\OAuthServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
