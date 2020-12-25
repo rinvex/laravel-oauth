@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Exceptions;
 
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Arr;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class MissingScopeException extends AuthorizationException
 {
@@ -19,8 +19,9 @@ class MissingScopeException extends AuthorizationException
     /**
      * Create a new missing scope exception.
      *
-     * @param  array|string  $scopes
-     * @param  string  $message
+     * @param array|string $scopes
+     * @param string       $message
+     *
      * @return void
      */
     public function __construct($scopes = [], $message = 'Invalid scope(s) provided.')

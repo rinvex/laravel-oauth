@@ -33,8 +33,9 @@ class PersonalAccessTokenFactory
     /**
      * Create a new personal access token factory instance.
      *
-     * @param  \League\OAuth2\Server\AuthorizationServer  $server
-     * @param  \Lcobucci\JWT\Parser  $jwt
+     * @param \League\OAuth2\Server\AuthorizationServer $server
+     * @param \Lcobucci\JWT\Parser                      $jwt
+     *
      * @return void
      */
     public function __construct(AuthorizationServer $server, JwtParser $jwt)
@@ -46,9 +47,10 @@ class PersonalAccessTokenFactory
     /**
      * Create a new personal access token.
      *
-     * @param  \Illuminate\Database\Eloquent\Model  $user
-     * @param  string  $name
-     * @param  array  $scopes
+     * @param \Illuminate\Database\Eloquent\Model $user
+     * @param string                              $name
+     * @param array                               $scopes
+     *
      * @return \Rinvex\OAuth\PersonalAccessTokenResult
      */
     public function make(Model $user, $name, array $scopes = [])
@@ -66,16 +68,17 @@ class PersonalAccessTokenFactory
         });
 
         return new PersonalAccessTokenResult(
-            $response['access_token'], $accessToken
+            $response['access_token'],
+            $accessToken
         );
     }
 
     /**
      * Get the personal access token client for the application.
      *
-     * @return \Rinvex\OAuth\Models\Client
-     *
      * @throws \RuntimeException
+     *
+     * @return \Rinvex\OAuth\Models\Client
      */
     public function personalAccessClient()
     {
@@ -95,9 +98,10 @@ class PersonalAccessTokenFactory
     /**
      * Create a request instance for the given client.
      *
-     * @param  \Rinvex\OAuth\Models\Client  $client
-     * @param  \Illuminate\Database\Eloquent\Model  $user
-     * @param  array  $scopes
+     * @param \Rinvex\OAuth\Models\Client         $client
+     * @param \Illuminate\Database\Eloquent\Model $user
+     * @param array                               $scopes
+     *
      * @return \Psr\Http\Message\ServerRequestInterface
      */
     protected function createRequest(Client $client, Model $user, array $scopes)
@@ -116,20 +120,23 @@ class PersonalAccessTokenFactory
     /**
      * Dispatch the given request to the authorization server.
      *
-     * @param  \Psr\Http\Message\ServerRequestInterface  $request
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *
      * @return array
      */
     protected function dispatchRequestToAuthorizationServer(ServerRequestInterface $request)
     {
         return json_decode($this->server->respondToAccessTokenRequest(
-            $request, new Response
+            $request,
+            new Response()
         )->getBody()->__toString(), true);
     }
 
     /**
      * Get the access token instance for the parsed response.
      *
-     * @param  array  $response
+     * @param array $response
+     *
      * @return \Rinvex\OAuth\Models\AccessToken
      */
     protected function findAccessToken(array $response)

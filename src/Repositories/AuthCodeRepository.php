@@ -15,7 +15,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function getNewAuthCode()
     {
-        return new AuthCode;
+        return new AuthCode();
     }
 
     /**

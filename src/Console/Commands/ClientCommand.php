@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rinvex\OAuth\Console\Commands;
 
 use Illuminate\Support\Str;
@@ -182,7 +184,8 @@ class ClientCommand extends Command
     /**
      * Output the client's ID and secret key.
      *
-     * @param  \Rinvex\OAuth\Models\Client  $client
+     * @param \Rinvex\OAuth\Models\Client $client
+     *
      * @return void
      */
     protected function outputClientDetails(Client $client)

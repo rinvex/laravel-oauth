@@ -53,8 +53,9 @@ class ClientRepository implements ClientRepositoryInterface
     /**
      * Determine if the given client can handle the given grant type.
      *
-     * @param  \Rinvex\OAuth\Models\Client  $record
-     * @param  string  $grantType
+     * @param \Rinvex\OAuth\Models\Client $record
+     * @param string                      $grantType
+     *
      * @return bool
      */
     protected function handlesGrant($record, $grantType)

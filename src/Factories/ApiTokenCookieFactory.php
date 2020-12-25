@@ -6,9 +6,9 @@ namespace Rinvex\OAuth\Factories;
 
 use Carbon\Carbon;
 use Firebase\JWT\JWT;
-use Illuminate\Contracts\Config\Repository as Config;
-use Illuminate\Contracts\Encryption\Encrypter;
 use Symfony\Component\HttpFoundation\Cookie;
+use Illuminate\Contracts\Encryption\Encrypter;
+use Illuminate\Contracts\Config\Repository as Config;
 
 class ApiTokenCookieFactory
 {
@@ -29,8 +29,9 @@ class ApiTokenCookieFactory
     /**
      * Create an API token cookie factory instance.
      *
-     * @param  \Illuminate\Contracts\Config\Repository  $config
-     * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
+     * @param \Illuminate\Contracts\Config\Repository    $config
+     * @param \Illuminate\Contracts\Encryption\Encrypter $encrypter
+     *
      * @return void
      */
     public function __construct(Config $config, Encrypter $encrypter)
@@ -42,8 +43,9 @@ class ApiTokenCookieFactory
     /**
      * Create a new API token cookie.
      *
-     * @param  mixed  $userId
-     * @param  string  $csrfToken
+     * @param mixed  $userId
+     * @param string $csrfToken
+     *
      * @return \Symfony\Component\HttpFoundation\Cookie
      */
     public function make($userId, $csrfToken)
@@ -68,9 +70,10 @@ class ApiTokenCookieFactory
     /**
      * Create a new JWT token for the given user ID and CSRF token.
      *
-     * @param  mixed  $userId
-     * @param  string  $csrfToken
-     * @param  \Carbon\Carbon  $expiration
+     * @param mixed          $userId
+     * @param string         $csrfToken
+     * @param \Carbon\Carbon $expiration
+     *
      * @return string
      */
     protected function createToken($userId, $csrfToken, Carbon $expiration)
