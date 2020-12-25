@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Console\Commands;
 
+use Rinvex\OAuth\OAuth;
 use phpseclib\Crypt\RSA;
 use Illuminate\Support\Arr;
-use Rinvex\OAuth\OAuth;
 use Illuminate\Console\Command;
 
 class KeysCommand extends Command
@@ -30,7 +30,8 @@ class KeysCommand extends Command
     /**
      * Execute the console command.
      *
-     * @param  \phpseclib\Crypt\RSA  $rsa
+     * @param \phpseclib\Crypt\RSA $rsa
+     *
      * @return void
      */
     public function handle(RSA $rsa)

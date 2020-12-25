@@ -23,7 +23,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * Create a new repository instance.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @param \Illuminate\Contracts\Events\Dispatcher $events
+     *
      * @return void
      */
     public function __construct(Dispatcher $events)
@@ -53,8 +54,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
             'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
             'scopes' => $accessTokenEntity->getScopes(),
             'is_revoked' => false,
-            'created_at' => new DateTime,
-            'updated_at' => new DateTime,
+            'created_at' => new DateTime(),
+            'updated_at' => new DateTime(),
             'expires_at' => $accessTokenEntity->getExpiryDateTime(),
         ]);
     }
@@ -62,7 +63,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * Revoke an access token.
      *
-     * @param  string  $accessTokenId
+     * @param string $accessTokenId
+     *
      * @return mixed
      */
     public function revokeAccessToken($accessTokenId)

@@ -19,7 +19,8 @@ class RedirectRule implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param  \Illuminate\Contracts\Validation\Factory  $validator
+     * @param \Illuminate\Contracts\Validation\Factory $validator
+     *
      * @return void
      */
     public function __construct(Factory $validator)

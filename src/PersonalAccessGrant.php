@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Rinvex\OAuth;
 
 use DateInterval;
+use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\Grant\AbstractGrant;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
-use Psr\Http\Message\ServerRequestInterface;
 
 class PersonalAccessGrant extends AbstractGrant
 {
@@ -28,8 +28,10 @@ class PersonalAccessGrant extends AbstractGrant
 
         // Issue and persist access token
         $accessToken = $this->issueAccessToken(
-            $accessTokenTTL, $client,
-            $this->getRequestParameter('user_id', $request), $scopes
+            $accessTokenTTL,
+            $client,
+            $this->getRequestParameter('user_id', $request),
+            $scopes
         );
 
         // Inject access token into response type

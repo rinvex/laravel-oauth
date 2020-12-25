@@ -139,7 +139,8 @@ class AccessToken extends Model
     /**
      * Determine if the token has a given scope.
      *
-     * @param  string  $scope
+     * @param string $scope
+     *
      * @return bool
      */
     public function can($scope)
@@ -164,7 +165,8 @@ class AccessToken extends Model
     /**
      * Resolve all possible scopes.
      *
-     * @param  string  $scope
+     * @param string $scope
+     *
      * @return array
      */
     protected function resolveInheritedScopes($scope)
@@ -185,7 +187,8 @@ class AccessToken extends Model
     /**
      * Determine if the token is missing a given scope.
      *
-     * @param  string  $scope
+     * @param string $scope
+     *
      * @return bool
      */
     public function cant($scope)
@@ -201,6 +204,7 @@ class AccessToken extends Model
     public function revoke()
     {
         $this->refreshTokens()->update(['is_revoked' => true]);
+
         return $this->forceFill(['is_revoked' => true])->save();
     }
 

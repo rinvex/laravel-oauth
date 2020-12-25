@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth;
 
-use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Contracts\Support\Arrayable;
 
 class PersonalAccessTokenResult implements Arrayable, Jsonable
 {
@@ -26,8 +26,9 @@ class PersonalAccessTokenResult implements Arrayable, Jsonable
     /**
      * Create a new result instance.
      *
-     * @param  string  $accessToken
-     * @param  \Rinvex\OAuth\Models\AccessToken  $token
+     * @param string                           $accessToken
+     * @param \Rinvex\OAuth\Models\AccessToken $token
+     *
      * @return void
      */
     public function __construct($accessToken, $token)
@@ -52,7 +53,8 @@ class PersonalAccessTokenResult implements Arrayable, Jsonable
     /**
      * Convert the object to its JSON representation.
      *
-     * @param  int  $options
+     * @param int $options
+     *
      * @return string
      */
     public function toJson($options = 0)

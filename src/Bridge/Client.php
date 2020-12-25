@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Bridge;
 
-use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Entities\Traits\ClientTrait;
+use League\OAuth2\Server\Entities\ClientEntityInterface;
 
 class Client implements ClientEntityInterface
 {
@@ -28,11 +28,12 @@ class Client implements ClientEntityInterface
     /**
      * Create a new client instance.
      *
-     * @param  string  $identifier
-     * @param  string  $name
-     * @param  string  $redirectUri
-     * @param  bool  $isConfidential
-     * @param  string|null  $provider
+     * @param string      $identifier
+     * @param string      $name
+     * @param string      $redirectUri
+     * @param bool        $isConfidential
+     * @param string|null $provider
+     *
      * @return void
      */
     public function __construct($identifier, $name, $redirectUri, $isConfidential = false, $provider = null)
@@ -58,7 +59,8 @@ class Client implements ClientEntityInterface
     /**
      * Set the client's identifier.
      *
-     * @param  string  $identifier
+     * @param string $identifier
+     *
      * @return void
      */
     public function setIdentifier($identifier)
