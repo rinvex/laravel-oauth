@@ -84,17 +84,12 @@ class OAuthServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.oauth');
 
         // Bind eloquent models to IoC container
-        $this->app->singleton('rinvex.oauth.client', $clientModel = $this->app['config']['rinvex.oauth.models.client']);
-        $clientModel === Client::class || $this->app->alias('rinvex.oauth.client', Client::class);
-
-        $this->app->singleton('rinvex.oauth.auth_code', $authCodeModel = $this->app['config']['rinvex.oauth.models.auth_code']);
-        $authCodeModel === AuthCode::class || $this->app->alias('rinvex.oauth.auth_code', AuthCode::class);
-
-        $this->app->singleton('rinvex.oauth.access_token', $accessTokenModel = $this->app['config']['rinvex.oauth.models.access_token']);
-        $accessTokenModel === AccessToken::class || $this->app->alias('rinvex.oauth.access_token', AccessToken::class);
-
-        $this->app->singleton('rinvex.oauth.refresh_token', $refreshTokenModel = $this->app['config']['rinvex.oauth.models.refresh_token']);
-        $refreshTokenModel === RefreshToken::class || $this->app->alias('rinvex.oauth.refresh_token', RefreshToken::class);
+        $this->registerModels([
+            'rinvex.oauth.client' => Client::class,
+            'rinvex.oauth.auth_code' => AuthCode::class,
+            'rinvex.oauth.access_token' => AccessToken::class,
+            'rinvex.oauth.refresh_token' => RefreshToken::class,
+        ]);
 
         $this->registerAuthorizationServer();
         $this->registerClientRepository();
