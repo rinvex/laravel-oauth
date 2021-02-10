@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rinvex\OAuth\Repositories;
 
 use DateTime;
-use Illuminate\Support\Str;
 use Rinvex\OAuth\Bridge\AccessToken;
 use Illuminate\Contracts\Events\Dispatcher;
 use League\OAuth2\Server\Entities\ClientEntityInterface;

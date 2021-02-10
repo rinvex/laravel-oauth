@@ -111,7 +111,7 @@ class PersonalAccessTokenFactory
 
         return (new ServerRequest('POST', 'not-important'))->withParsedBody([
             'grant_type' => 'personal_access',
-            'client_id' => $client->id,
+            'client_id' => $client->getRouteKey(),
             'client_secret' => $personalAccessClientSecret,
             'user_id' => Str::plural($user->getMorphClass()).':'.$user->getAuthIdentifier(),
             'scope' => implode(' ', $scopes),
