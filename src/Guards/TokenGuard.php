@@ -7,6 +7,7 @@ namespace Rinvex\OAuth\Guards;
 use Exception;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Rinvex\OAuth\TransientToken;
 use Rinvex\OAuth\OAuthUserProvider;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -50,11 +51,8 @@ class TokenGuard
      *
      * @return void
      */
-    public function __construct(
-        ResourceServer $server,
-        OAuthUserProvider $provider,
-        Encrypter $encrypter
-    ) {
+    public function __construct(ResourceServer $server, OAuthUserProvider $provider, Encrypter $encrypter)
+    {
         $this->server = $server;
         $this->provider = $provider;
         $this->encrypter = $encrypter;
@@ -150,8 +148,7 @@ class TokenGuard
         // Next, we will assign a token instance to this user which the developers may use
         // to determine if the token has a given scope, etc. This will be useful during
         // authorization such as within the developer's Laravel model policy classes.
-        $token = app('rinvex.oauth.access_token')->where('id', $psr->getAttribute('oauth_access_token_id'));
-
+        $token = app('rinvex.oauth.access_token')->where('id', $psr->getAttribute('oauth_access_token_id'))->first();
         $clientId = $psr->getAttribute('oauth_client_id');
 
         // Finally, we will verify if the client that issued this token is still valid and

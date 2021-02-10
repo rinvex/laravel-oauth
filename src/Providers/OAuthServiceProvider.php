@@ -210,6 +210,8 @@ class OAuthServiceProvider extends ServiceProvider
     /**
      * Make the authorization service instance.
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return \League\OAuth2\Server\AuthorizationServer
      */
     public function makeAuthorizationServer()

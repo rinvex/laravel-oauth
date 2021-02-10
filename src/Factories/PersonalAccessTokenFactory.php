@@ -123,6 +123,8 @@ class PersonalAccessTokenFactory
      *
      * @param \Psr\Http\Message\ServerRequestInterface $request
      *
+     * @throws \League\OAuth2\Server\Exception\OAuthServerException
+     *
      * @return array
      */
     protected function dispatchRequestToAuthorizationServer(ServerRequestInterface $request)

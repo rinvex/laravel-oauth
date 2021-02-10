@@ -36,6 +36,8 @@ class KeysCommand extends Command
      */
     public function handle(RSA $rsa)
     {
+        $this->alert($this->description);
+
         [$publicKey, $privateKey] = [
             OAuth::keyPath('oauth-public.key'),
             OAuth::keyPath('oauth-private.key'),
