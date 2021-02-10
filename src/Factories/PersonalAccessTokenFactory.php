@@ -83,7 +83,7 @@ class PersonalAccessTokenFactory
     public function personalAccessClient()
     {
         if ($personalAccessClientId = config('rinvex.oauth.personal_access_client.id')) {
-            return app('rinvex.oauth.client')->where('id', $personalAccessClientId)->first();
+            return app('rinvex.oauth.client')->resolveRouteBinding($personalAccessClientId);
         }
 
         $client = app('rinvex.oauth.client')->where('grant_type', 'personal_access');

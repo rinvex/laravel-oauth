@@ -108,12 +108,12 @@ class TokenGuard
                 return;
             }
 
-            $client = app('rinvex.oauth.client')->where('id', $psr->getAttribute('oauth_client_id'))->first();
+            $client = app('rinvex.oauth.client')->resolveRouteBinding($psr->getAttribute('oauth_client_id'));
 
             return $client && ! $client->is_revoked ? $client : null;
         } elseif ($request->cookie(config('rinvex.oauth.cookie'))) {
             if ($token = $this->getTokenViaCookie($request)) {
-                $client = app('rinvex.oauth.client')->where('id', $token['aud'])->first();
+                $client = app('rinvex.oauth.client')->resolveRouteBinding($token['aud']);
 
                 return $client && ! $client->is_revoked ? $client : null;
             }
@@ -158,7 +158,7 @@ class TokenGuard
         // Finally, we will verify if the client that issued this token is still valid and
         // its tokens may still be used. If not, we will bail out since we don't want a
         // user to be able to send access tokens for deleted or revoked applications.
-        $client = app('rinvex.oauth.client')->where('id', $clientId)->first();
+        $client = app('rinvex.oauth.client')->resolveRouteBinding($clientId);
 
         if (is_null($client) || $client->is_revoked) {
             return;
