@@ -6,6 +6,7 @@ namespace Rinvex\OAuth\Factories;
 
 use RuntimeException;
 use Nyholm\Psr7\Response;
+use Illuminate\Support\Str;
 use Nyholm\Psr7\ServerRequest;
 use Rinvex\OAuth\Models\Client;
 use Lcobucci\JWT\Parser as JwtParser;
@@ -61,8 +62,8 @@ class PersonalAccessTokenFactory
 
         $accessToken = tap($this->findAccessToken($response), function ($accessToken) use ($user, $name) {
             $accessToken->forceFill([
-                'user_id' => $user->getKey(),
-                'provider' => $user->getMorphClass(),
+                'user_id' => $user->getAuthIdentifier(),
+                'provider' => Str::plural($user->getMorphClass()),
                 'name' => $name,
             ])->save();
         });
@@ -112,7 +113,7 @@ class PersonalAccessTokenFactory
             'grant_type' => 'personal_access',
             'client_id' => $client->id,
             'client_secret' => $personalAccessClientSecret,
-            'user_id' => $user->getMorphClass().':'.$user->getKey(),
+            'user_id' => Str::plural($user->getMorphClass()).':'.$user->getAuthIdentifier(),
             'scope' => implode(' ', $scopes),
         ]);
     }

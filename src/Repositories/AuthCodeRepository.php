@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Repositories;
 
+use Illuminate\Support\Str;
 use Rinvex\OAuth\Bridge\AuthCode;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
@@ -23,13 +24,13 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
-        $user = explode(':', $authCodeEntity->getUserIdentifier());
         $clientId = $authCodeEntity->getClient()->getIdentifier();
+        [$provider, $userId] = explode(':', $authCodeEntity->getUserIdentifier());
 
         app('rinvex.oauth.auth_code')->create([
             'id' => $authCodeEntity->getIdentifier(),
-            'user_id' => $user[1],
-            'provider' => $user[0],
+            'user_id' => $userId,
+            'provider' => $provider,
             'client_id' => app('rinvex.oauth.client')->resolveRouteBinding($clientId)->getKey(),
             'scopes' => $authCodeEntity->getScopes(),
             'is_revoked' => false,

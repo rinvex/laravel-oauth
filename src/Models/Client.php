@@ -6,6 +6,7 @@ namespace Rinvex\OAuth\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -151,7 +152,7 @@ class Client extends Model
     {
         return $this->accessTokens()
                     ->where('user_id', $user->getAuthIdentifier())
-                    ->where('provider', $user->getMorphClass())
+                    ->where('provider', Str::plural($user->getMorphClass()))
                     ->where('is_revoked', false)
                     ->where('expires_at', '>', Carbon::now())
                     ->first();
@@ -168,7 +169,7 @@ class Client extends Model
     {
         return $this->accessTokens()
                     ->where('user_id', $user->getAuthIdentifier())
-                    ->where('provider', $user->getMorphClass())
+                    ->where('provider', Str::plural($user->getMorphClass()))
                     ->where('is_revoked', false)
                     ->where('expires_at', '>', Carbon::now())
                     ->latest('expires_at')

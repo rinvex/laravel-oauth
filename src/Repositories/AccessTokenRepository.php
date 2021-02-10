@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rinvex\OAuth\Repositories;
 
 use DateTime;
+use Illuminate\Support\Str;
 use Rinvex\OAuth\Bridge\AccessToken;
 use Illuminate\Contracts\Events\Dispatcher;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -45,13 +46,13 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
-        $user = explode(':', $accessTokenEntity->getUserIdentifier());
         $clientId = $accessTokenEntity->getClient()->getIdentifier();
+        [$provider, $userId] = explode(':', $accessTokenEntity->getUserIdentifier());
 
         app('rinvex.oauth.access_token')->create([
             'id' => $accessTokenEntity->getIdentifier(),
-            'user_id' => $user[1],
-            'provider' => $user[0],
+            'user_id' => $userId,
+            'provider' => $provider,
             'client_id' => app('rinvex.oauth.client')->resolveRouteBinding($clientId)->getKey(),
             'scopes' => $accessTokenEntity->getScopes(),
             'is_revoked' => false,
