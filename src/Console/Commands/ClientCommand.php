@@ -75,7 +75,6 @@ class ClientCommand extends Command
             'provider' => $provider,
             'redirect' => $redirect,
             'grant_type' => 'personal_access',
-            'revoked' => false,
         ]);
 
         $this->info('Personal access client created successfully.');
@@ -108,7 +107,6 @@ class ClientCommand extends Command
             'provider' => $provider,
             'redirect' => $redirect,
             'grant_type' => 'password',
-            'revoked' => false,
         ]);
 
         $this->info('Password grant client created successfully.');
@@ -140,7 +138,6 @@ class ClientCommand extends Command
             'provider' => $provider,
             'redirect' => null,
             'grant_type' => 'client_credentials',
-            'revoked' => false,
         ]);
 
         $this->info('New client created successfully.');
@@ -173,7 +170,6 @@ class ClientCommand extends Command
             'provider' => $provider,
             'redirect' => $redirect,
             'grant_type' => 'authorization_code',
-            'revoked' => false,
         ]);
 
         $this->info('New client created successfully.');

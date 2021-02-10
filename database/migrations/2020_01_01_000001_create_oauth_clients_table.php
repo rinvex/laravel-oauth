@@ -23,7 +23,7 @@ class CreateOauthClientsTable extends Migration
             $table->string('grant_type', 100);
             $table->string('secret', 100)->nullable();
             $table->text('redirect');
-            $table->boolean('is_revoked');
+            $table->boolean('is_revoked')->default(false);
             $table->timestamps();
 
             // Indexes

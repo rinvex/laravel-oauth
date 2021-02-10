@@ -54,7 +54,7 @@ class Client extends Model
         'secret' => 'string',
         'redirect' => 'string',
         'grant_type' => 'string',
-        'is_revoked' => 'bool',
+        'is_revoked' => 'boolean',
     ];
 
     /**
