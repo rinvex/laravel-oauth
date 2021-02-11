@@ -23,7 +23,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * Create a new repository instance.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @param \Illuminate\Contracts\Events\Dispatcher $events
+     *
      * @return void
      */
     public function __construct(Dispatcher $events)
@@ -44,17 +45,18 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
-        $user = explode(':', $accessTokenEntity->getUserIdentifier());
+        $clientId = $accessTokenEntity->getClient()->getIdentifier();
+        [$provider, $userId] = explode(':', $accessTokenEntity->getUserIdentifier());
 
         app('rinvex.oauth.access_token')->create([
             'id' => $accessTokenEntity->getIdentifier(),
-            'user_id' => $user[1],
-            'provider' => $user[0],
-            'client_id' => $accessTokenEntity->getClient()->getIdentifier(),
+            'user_id' => $userId,
+            'provider' => $provider,
+            'client_id' => app('rinvex.oauth.client')->resolveRouteBinding($clientId)->getKey(),
             'scopes' => $accessTokenEntity->getScopes(),
             'is_revoked' => false,
-            'created_at' => new DateTime,
-            'updated_at' => new DateTime,
+            'created_at' => new DateTime(),
+            'updated_at' => new DateTime(),
             'expires_at' => $accessTokenEntity->getExpiryDateTime(),
         ]);
     }
@@ -62,7 +64,8 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * Revoke an access token.
      *
-     * @param  string  $accessTokenId
+     * @param string $accessTokenId
+     *
      * @return mixed
      */
     public function revokeAccessToken($accessTokenId)

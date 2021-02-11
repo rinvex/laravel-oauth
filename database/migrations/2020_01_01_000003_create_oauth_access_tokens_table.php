@@ -22,7 +22,7 @@ class CreateOauthAccessTokensTable extends Migration
             $table->integer('client_id')->unsigned();
             $table->string('name')->nullable();
             $table->{$this->jsonable()}('scopes')->nullable();
-            $table->boolean('is_revoked');
+            $table->boolean('is_revoked')->default(false);
             $table->dateTime('expires_at')->nullable();
 
             // Indexes

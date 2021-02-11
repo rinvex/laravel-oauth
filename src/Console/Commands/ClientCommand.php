@@ -1,13 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Rinvex\OAuth\Console\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Rinvex\OAuth\Models\Client;
+use Rinvex\Support\Traits\ArtisanCanValidateAnswers;
 
 class ClientCommand extends Command
 {
+    use ArtisanCanValidateAnswers;
+
     /**
      * The name and signature of the console command.
      *
@@ -55,9 +60,11 @@ class ClientCommand extends Command
      */
     protected function createPersonalAccessClient()
     {
-        $userId = $this->option('user_id') ?: $this->ask('Which user ID should the client be assigned to?');
-        $redirect = $this->option('redirect_uri') ?: $this->ask('Where should we redirect the request after authorization?', url('/auth/callback'));
-        $name = $this->option('name') ?: $this->ask('What should we name the personal access client?', config('app.name').' Personal Access Client');
+        $this->alert('Create Personal Access Client');
+
+        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
+        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
+        $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
         $providers = array_keys(config('auth.providers'));
         $provider = $this->option('provider') ?: $this->choice(
@@ -73,7 +80,6 @@ class ClientCommand extends Command
             'provider' => $provider,
             'redirect' => $redirect,
             'grant_type' => 'personal_access',
-            'revoked' => false,
         ]);
 
         $this->info('Personal access client created successfully.');
@@ -88,9 +94,11 @@ class ClientCommand extends Command
      */
     protected function createPasswordClient()
     {
-        $userId = $this->option('user_id') ?: $this->ask('Which user ID should the client be assigned to?');
-        $redirect = $this->option('redirect_uri') ?: $this->ask('Where should we redirect the request after authorization?', url('/auth/callback'));
-        $name = $this->option('name') ?: $this->ask('What should we name the password grant client?', config('app.name').' Password Grant Client');
+        $this->alert('Create Password Client');
+
+        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
+        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
+        $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
         $providers = array_keys(config('auth.providers'));
         $provider = $this->option('provider') ?: $this->choice(
@@ -106,7 +114,6 @@ class ClientCommand extends Command
             'provider' => $provider,
             'redirect' => $redirect,
             'grant_type' => 'password',
-            'revoked' => false,
         ]);
 
         $this->info('Password grant client created successfully.');
@@ -121,8 +128,10 @@ class ClientCommand extends Command
      */
     protected function createClientCredentialsClient()
     {
-        $userId = $this->option('user_id') ?: $this->ask('Which user ID should the client be assigned to?');
-        $name = $this->option('name') ?: $this->ask('What should we name the client?', config('app.name').' ClientCredentials Grant Client');
+        $this->alert('Create Client Credentials Client');
+
+        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
+        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
 
         $providers = array_keys(config('auth.providers'));
         $provider = $this->option('provider') ?: $this->choice(
@@ -138,7 +147,6 @@ class ClientCommand extends Command
             'provider' => $provider,
             'redirect' => null,
             'grant_type' => 'client_credentials',
-            'revoked' => false,
         ]);
 
         $this->info('New client created successfully.');
@@ -153,9 +161,11 @@ class ClientCommand extends Command
      */
     protected function createAuthorizationCodeClient()
     {
-        $name = $this->option('name') ?: $this->ask('What should we name the client?');
-        $userId = $this->option('user_id') ?: $this->ask('Which user ID should the client be assigned to?');
-        $redirect = $this->option('redirect_uri') ?: $this->ask('Where should we redirect the request after authorization?', url('/auth/callback'));
+        $this->alert('Create Authorization Code Client');
+
+        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
+        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
+        $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
         $providers = array_keys(config('auth.providers'));
         $provider = $this->option('provider') ?: $this->choice(
@@ -171,7 +181,6 @@ class ClientCommand extends Command
             'provider' => $provider,
             'redirect' => $redirect,
             'grant_type' => 'authorization_code',
-            'revoked' => false,
         ]);
 
         $this->info('New client created successfully.');
@@ -182,7 +191,8 @@ class ClientCommand extends Command
     /**
      * Output the client's ID and secret key.
      *
-     * @param  \Rinvex\OAuth\Models\Client  $client
+     * @param \Rinvex\OAuth\Models\Client $client
+     *
      * @return void
      */
     protected function outputClientDetails(Client $client)
@@ -190,7 +200,7 @@ class ClientCommand extends Command
         $this->line('<comment>Here is your new client secret. This is the only time it will be shown so don\'t lose it!</comment>');
         $this->line('');
 
-        $this->line('<comment>Client ID:</comment> '.$client->id);
+        $this->line('<comment>Client ID:</comment> '.$client->getRouteKey());
         $this->line('<comment>Client secret:</comment> '.$client->plainSecret);
     }
 }

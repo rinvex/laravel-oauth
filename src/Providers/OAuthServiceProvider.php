@@ -8,17 +8,17 @@ use DateInterval;
 use Rinvex\OAuth\OAuth;
 use Rinvex\OAuth\Models\Client;
 use Illuminate\Auth\AuthManager;
-use Rinvex\OAuth\Models\AuthCode;
 use Illuminate\Auth\RequestGuard;
+use Rinvex\OAuth\Models\AuthCode;
 use Illuminate\Auth\Events\Logout;
 use League\OAuth2\Server\CryptKey;
 use Rinvex\OAuth\Guards\TokenGuard;
 use Rinvex\OAuth\OAuthUserProvider;
-use Rinvex\OAuth\Models\AccessToken;
 use Illuminate\Support\Facades\Auth;
-use Rinvex\OAuth\PersonalAccessGrant;
-use Rinvex\OAuth\Models\RefreshToken;
+use Rinvex\OAuth\Models\AccessToken;
 use Illuminate\Support\Facades\Event;
+use Rinvex\OAuth\Models\RefreshToken;
+use Rinvex\OAuth\PersonalAccessGrant;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
@@ -84,17 +84,12 @@ class OAuthServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(realpath(__DIR__.'/../../config/config.php'), 'rinvex.oauth');
 
         // Bind eloquent models to IoC container
-        $this->app->singleton('rinvex.oauth.client', $clientModel = $this->app['config']['rinvex.oauth.models.client']);
-        $clientModel === Client::class || $this->app->alias('rinvex.oauth.client', Client::class);
-
-        $this->app->singleton('rinvex.oauth.auth_code', $authCodeModel = $this->app['config']['rinvex.oauth.models.auth_code']);
-        $authCodeModel === AuthCode::class || $this->app->alias('rinvex.oauth.auth_code', AuthCode::class);
-
-        $this->app->singleton('rinvex.oauth.access_token', $accessTokenModel = $this->app['config']['rinvex.oauth.models.access_token']);
-        $accessTokenModel === AccessToken::class || $this->app->alias('rinvex.oauth.access_token', AccessToken::class);
-
-        $this->app->singleton('rinvex.oauth.refresh_token', $refreshTokenModel = $this->app['config']['rinvex.oauth.models.refresh_token']);
-        $refreshTokenModel === RefreshToken::class || $this->app->alias('rinvex.oauth.refresh_token', RefreshToken::class);
+        $this->registerModels([
+            'rinvex.oauth.client' => Client::class,
+            'rinvex.oauth.auth_code' => AuthCode::class,
+            'rinvex.oauth.access_token' => AccessToken::class,
+            'rinvex.oauth.refresh_token' => RefreshToken::class,
+        ]);
 
         $this->registerAuthorizationServer();
         $this->registerClientRepository();
@@ -113,11 +108,12 @@ class OAuthServiceProvider extends ServiceProvider
             return tap($this->makeAuthorizationServer(), function ($server) {
                 $server->setDefaultScope(config('rinvex.oauth.default_scope'));
 
-                foreach (collect(config('rinvex.oauth.grants'))->filter(fn($args) => $args['enabled']) as $grant => $options) {
+                foreach (collect(config('rinvex.oauth.grants'))->filter(fn ($args) => $args['enabled']) as $grant => $options) {
                     $makeGrantMethod = "make{$grant}Grant";
 
                     $server->enableGrantType(
-                        $this->$makeGrantMethod(), $options['expire_in']
+                        $this->{$makeGrantMethod}(),
+                        $options['expire_in']
                     );
                 }
             });
@@ -131,7 +127,7 @@ class OAuthServiceProvider extends ServiceProvider
      */
     protected function makePersonalAccessGrant()
     {
-        return new PersonalAccessGrant;
+        return new PersonalAccessGrant();
     }
 
     /**
@@ -141,7 +137,7 @@ class OAuthServiceProvider extends ServiceProvider
      */
     protected function makeClientCredentialsGrant()
     {
-        return new ClientCredentialsGrant;
+        return new ClientCredentialsGrant();
     }
 
     /**
@@ -214,6 +210,8 @@ class OAuthServiceProvider extends ServiceProvider
     /**
      * Make the authorization service instance.
      *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     *
      * @return \League\OAuth2\Server\AuthorizationServer
      */
     public function makeAuthorizationServer()
@@ -235,7 +233,7 @@ class OAuthServiceProvider extends ServiceProvider
     protected function registerClientRepository()
     {
         $this->app->singleton(ClientRepository::class, function () {
-            return new ClientRepository;
+            return new ClientRepository();
         });
     }
 
@@ -257,7 +255,8 @@ class OAuthServiceProvider extends ServiceProvider
     /**
      * Create a CryptKey instance without permissions check.
      *
-     * @param  string  $type
+     * @param string $type
+     *
      * @return \League\OAuth2\Server\CryptKey
      */
     protected function makeCryptKey($type)
@@ -290,7 +289,8 @@ class OAuthServiceProvider extends ServiceProvider
     /**
      * Make an instance of the token guard.
      *
-     * @param  array  $config
+     * @param array $config
+     *
      * @return \Illuminate\Auth\RequestGuard
      */
     protected function makeGuard(array $config)

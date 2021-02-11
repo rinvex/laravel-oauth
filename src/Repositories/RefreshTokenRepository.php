@@ -21,7 +21,8 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     /**
      * Create a new repository instance.
      *
-     * @param  \Illuminate\Contracts\Events\Dispatcher  $events
+     * @param \Illuminate\Contracts\Events\Dispatcher $events
+     *
      * @return void
      */
     public function __construct(Dispatcher $events)
@@ -34,7 +35,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
      */
     public function getNewRefreshToken()
     {
-        return new RefreshToken;
+        return new RefreshToken();
     }
 
     /**
@@ -53,7 +54,8 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     /**
      * Revokes the refresh token.
      *
-     * @param  string  $id
+     * @param string $id
+     *
      * @return mixed
      */
     public function revokeRefreshToken($id)
@@ -64,7 +66,8 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     /**
      * Checks if the refresh token has been revoked.
      *
-     * @param  string  $id
+     * @param string $id
+     *
      * @return bool
      */
     public function isRefreshTokenRevoked($id)

@@ -23,7 +23,8 @@ abstract class CheckCredentials
     /**
      * Create a new middleware instance.
      *
-     * @param  \League\OAuth2\Server\ResourceServer  $server
+     * @param \League\OAuth2\Server\ResourceServer $server
+     *
      * @return void
      */
     public function __construct(ResourceServer $server)
@@ -34,26 +35,27 @@ abstract class CheckCredentials
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  mixed  ...$scopes
-     * @return mixed
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     * @param mixed                    ...$scopes
      *
      * @throws \Illuminate\Auth\AuthenticationException
+     *
+     * @return mixed
      */
     public function handle($request, Closure $next, ...$scopes)
     {
         $psr = (new PsrHttpFactory(
-            new Psr17Factory,
-            new Psr17Factory,
-            new Psr17Factory,
-            new Psr17Factory
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory(),
+            new Psr17Factory()
         ))->createRequest($request);
 
         try {
             $psr = $this->server->validateAuthenticatedRequest($psr);
         } catch (OAuthServerException $e) {
-            throw new AuthenticationException;
+            throw new AuthenticationException();
         }
 
         $this->validate($psr, $scopes);
@@ -64,11 +66,12 @@ abstract class CheckCredentials
     /**
      * Validate the scopes and token on the incoming request.
      *
-     * @param  \Psr\Http\Message\ServerRequestInterface $psr
-     * @param  array  $scopes
-     * @return void
+     * @param \Psr\Http\Message\ServerRequestInterface $psr
+     * @param array                                    $scopes
      *
      * @throws \Rinvex\OAuth\Exceptions\MissingScopeException|\Illuminate\Auth\AuthenticationException
+     *
+     * @return void
      */
     protected function validate($psr, $scopes)
     {
@@ -82,21 +85,23 @@ abstract class CheckCredentials
     /**
      * Validate token credentials.
      *
-     * @param  \Rinvex\OAuth\Models\AccessToken  $accessToken
-     * @return void
+     * @param \Rinvex\OAuth\Models\AccessToken $accessToken
      *
      * @throws \Illuminate\Auth\AuthenticationException
+     *
+     * @return void
      */
     abstract protected function validateCredentials($accessToken);
 
     /**
      * Validate token scopes.
      *
-     * @param  \Rinvex\OAuth\Models\AccessToken  $accessToken
-     * @param  array  $scopes
-     * @return void
+     * @param \Rinvex\OAuth\Models\AccessToken $accessToken
+     * @param array                            $scopes
      *
      * @throws \Rinvex\OAuth\Exceptions\MissingScopeException
+     *
+     * @return void
      */
     abstract protected function validateScopes($accessToken, $scopes);
 }

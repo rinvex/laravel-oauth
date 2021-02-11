@@ -36,7 +36,7 @@ return [
     'default_scope' => null,
 
     // The storage location of the encryption keys.
-    'key_path' => null,
+    'key_path' => env('OAUTH_KEY_PATH'),
 
     // Database Tables
     'tables' => [
@@ -65,9 +65,9 @@ return [
     |
     */
 
-    'private_key' => null,
+    'private_key' => env('OAUTH_PRIVATE_KEY'),
 
-    'public_key' => null,
+    'public_key' => env('OAUTH_PUBLIC_KEY'),
 
     /*
     |--------------------------------------------------------------------------

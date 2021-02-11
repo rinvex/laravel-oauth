@@ -23,7 +23,8 @@ class UserRepository implements UserRepositoryInterface
     /**
      * Create a new repository instance.
      *
-     * @param  \Illuminate\Contracts\Hashing\Hasher  $hasher
+     * @param \Illuminate\Contracts\Hashing\Hasher $hasher
+     *
      * @return void
      */
     public function __construct(Hasher $hasher)
@@ -36,12 +37,12 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity)
     {
-        if (is_null($model = config('auth.providers.'.Str::plural($clientEntity->provider).'.model'))) {
+        if (is_null($model = config('auth.providers.'.$clientEntity->provider.'.model'))) {
             throw new RuntimeException('Unable to determine authentication model from configuration.');
         }
 
         if (method_exists($model, 'findAndValidateForOAuth')) {
-            $user = (new $model)->findAndValidateForOAuth($username, $password);
+            $user = (new $model())->findAndValidateForOAuth($username, $password);
 
             if (! $user) {
                 return;
@@ -51,9 +52,9 @@ class UserRepository implements UserRepositoryInterface
         }
 
         if (method_exists($model, 'findForOAuth')) {
-            $user = (new $model)->findForOAuth($username);
+            $user = (new $model())->findForOAuth($username);
         } else {
-            $user = (new $model)->where('email', $username)->first();
+            $user = (new $model())->where('email', $username)->first();
         }
 
         if (! $user) {
