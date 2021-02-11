@@ -7,7 +7,6 @@ namespace Rinvex\OAuth\Guards;
 use Exception;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Rinvex\OAuth\TransientToken;
 use Rinvex\OAuth\OAuthUserProvider;
 use Nyholm\Psr7\Factory\Psr17Factory;

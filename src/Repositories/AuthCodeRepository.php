@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Repositories;
 
-use Illuminate\Support\Str;
 use Rinvex\OAuth\Bridge\AuthCode;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;

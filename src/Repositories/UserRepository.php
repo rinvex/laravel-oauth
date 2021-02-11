@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rinvex\OAuth\Repositories;
 
 use RuntimeException;
-use Illuminate\Support\Str;
 use Rinvex\OAuth\Bridge\User;
 use Illuminate\Contracts\Hashing\Hasher;
 use League\OAuth2\Server\Entities\ClientEntityInterface;

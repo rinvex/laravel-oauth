@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth;
 
-use Mockery;
-use League\OAuth2\Server\ResourceServer;
-use Psr\Http\Message\ServerRequestInterface;
-
 class OAuth
 {
     /**
