@@ -16,7 +16,7 @@ class CreateOauthAuthCodesTable extends Migration
     public function up(): void
     {
         Schema::create(config('rinvex.oauth.tables.auth_codes'), function (Blueprint $table) {
-            $table->string('id', 100)->primary();
+            $table->string('identifier', 100);
             $table->integer('user_id')->unsigned();
             $table->string('user_type');
             $table->integer('client_id')->unsigned();
@@ -24,6 +24,7 @@ class CreateOauthAuthCodesTable extends Migration
             $table->dateTime('expires_at')->nullable();
 
             // Indexes
+            $table->unique('identifier');
             $table->index(['user_type', 'user_id'], 'auth_codes_user_type_id');
             $table->foreign('client_id')->references('id')->on(config('rinvex.oauth.tables.clients'))
                   ->onDelete('cascade')->onUpdate('cascade');

@@ -16,14 +16,15 @@ class CreateOauthRefreshTokensTable extends Migration
     public function up(): void
     {
         Schema::create(config('rinvex.oauth.tables.refresh_tokens'), function (Blueprint $table) {
-            $table->string('id', 100)->primary();
-            $table->string('access_token_id', 100);
+            $table->string('identifier', 100);
+            $table->string('access_token_identifier', 100);
             $table->boolean('is_revoked')->default(false);
             $table->dateTime('expires_at')->nullable();
 
             // Indexes
-            $table->index(['access_token_id']);
-            $table->foreign('access_token_id')->references('id')->on(config('rinvex.oauth.tables.access_tokens'))
+            $table->unique('identifier');
+            $table->index(['access_token_identifier']);
+            $table->foreign('access_token_identifier')->references('identifier')->on(config('rinvex.oauth.tables.access_tokens'))
                   ->onDelete('cascade')->onUpdate('cascade');
         });
     }

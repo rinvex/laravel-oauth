@@ -30,7 +30,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
         $clientId = method_exists($client = app('rinvex.oauth.client'), 'unhashId') ? $client->unhashId($clientId) : $clientId;
 
         app('rinvex.oauth.auth_code')->create([
-            'id' => $authCodeEntity->getIdentifier(),
+            'identifier' => $authCodeEntity->getIdentifier(),
             'user_id' => $userId,
             'user_type' => $userType,
             'client_id' => $clientId,
@@ -44,7 +44,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function revokeAuthCode($codeId)
     {
-        app('rinvex.oauth.auth_code')->where('id', $codeId)->update(['is_revoked' => true]);
+        app('rinvex.oauth.auth_code')->where('identifier', $codeId)->update(['is_revoked' => true]);
     }
 
     /**
@@ -52,6 +52,6 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        return app('rinvex.oauth.auth_code')->where('id', $codeId)->where('is_revoked', true)->exists();
+        return app('rinvex.oauth.auth_code')->where('identifier', $codeId)->where('is_revoked', true)->exists();
     }
 }

@@ -53,7 +53,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
         $scopes = array_map(fn ($item) => app('cortex.auth.ability')->unhashId($item->getIdentifier()), $accessTokenEntity->getScopes());
 
         app('rinvex.oauth.access_token')->create([
-            'id' => $accessTokenEntity->getIdentifier(),
+            'identifier' => $accessTokenEntity->getIdentifier(),
             'user_id' => $userId,
             'user_type' => $userType,
             'client_id' => $clientId,
@@ -68,21 +68,21 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * Revoke an access token.
      *
-     * @param string $accessTokenId
+     * @param string $tokenId
      *
      * @return mixed
      */
-    public function revokeAccessToken($accessTokenId)
+    public function revokeAccessToken($tokenId)
     {
-        app('rinvex.oauth.access_token')->where('id', $accessTokenId)->update(['is_revoked' => true]);
+        app('rinvex.oauth.access_token')->where('identifier', $tokenId)->update(['is_revoked' => true]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isAccessTokenRevoked($accessTokenId)
+    public function isAccessTokenRevoked($tokenId)
     {
-        if ($accessToken = app('rinvex.oauth.access_token')->where('id', $accessTokenId)->first()) {
+        if ($accessToken = app('rinvex.oauth.access_token')->where('identifier', $tokenId)->first()) {
             return $accessToken->is_revoked;
         }
 

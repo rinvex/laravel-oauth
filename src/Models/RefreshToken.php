@@ -36,8 +36,8 @@ class RefreshToken extends Model
      * {@inheritdoc}
      */
     protected $fillable = [
-        'id',
-        'access_token_id',
+        'identifier',
+        'access_token_identifier',
         'is_revoked',
         'expires_at',
     ];
@@ -46,8 +46,8 @@ class RefreshToken extends Model
      * {@inheritdoc}
      */
     protected $casts = [
-        'id' => 'string',
-        'access_token_id' => 'string',
+        'identifier' => 'string',
+        'access_token_identifier' => 'string',
         'is_revoked' => 'boolean',
         'expires_at' => 'date',
     ];
@@ -86,8 +86,8 @@ class RefreshToken extends Model
 
         $this->setTable(config('rinvex.oauth.tables.refresh_tokens'));
         $this->setRules([
-            'id' => 'required|string|strip_tags|max:100',
-            'access_token_id' => 'required|string|max:100',
+            'identifier' => 'required|string|strip_tags|max:100',
+            'access_token_identifier' => 'required|string|max:100',
             'is_revoked' => 'sometimes|boolean',
             'expires_at' => 'nullable|date',
         ]);

@@ -148,7 +148,7 @@ class TokenGuard
         // Next, we will assign a token instance to this user which the developers may use
         // to determine if the token has a given scope, etc. This will be useful during
         // authorization such as within the developer's Laravel model policy classes.
-        $token = app('rinvex.oauth.access_token')->where('id', $psr->getAttribute('oauth_access_token_id'))->first();
+        $token = app('rinvex.oauth.access_token')->where('identifier', $psr->getAttribute('oauth_access_token_id'))->first();
         $clientId = $psr->getAttribute('oauth_client_id');
 
         // Finally, we will verify if the client that issued this token is still valid and

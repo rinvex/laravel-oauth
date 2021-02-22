@@ -75,7 +75,7 @@ abstract class CheckCredentials
      */
     protected function validate($psr, $scopes)
     {
-        $accessToken = app('rinvex.oauth.access_token')->with(['abilities'])->where('id', $psr->getAttribute('oauth_access_token_id'))->first();
+        $accessToken = app('rinvex.oauth.access_token')->with(['abilities'])->where('identifier', $psr->getAttribute('oauth_access_token_id'))->first();
 
         $this->validateCredentials($accessToken);
 

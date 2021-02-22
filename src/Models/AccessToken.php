@@ -41,7 +41,7 @@ class AccessToken extends Model
      * {@inheritdoc}
      */
     protected $fillable = [
-        'id',
+        'identifier',
         'user_id',
         'user_type',
         'client_id',
@@ -55,7 +55,7 @@ class AccessToken extends Model
      * {@inheritdoc}
      */
     protected $casts = [
-        'id' => 'string',
+        'identifier' => 'string',
         'user_id' => 'integer',
         'user_type' => 'string',
         'client_id' => 'integer',
@@ -98,7 +98,7 @@ class AccessToken extends Model
 
         $this->setTable(config('rinvex.oauth.tables.access_tokens'));
         $this->setRules([
-            'id' => 'required|string|strip_tags|max:100',
+            'identifier' => 'required|string|strip_tags|max:100',
             'user_id' => 'required|integer',
             'user_type' => 'required|string|strip_tags|max:150',
             'client_id' => 'required|integer|exists:'.config('rinvex.oauth.tables.clients').',id',
@@ -135,7 +135,7 @@ class AccessToken extends Model
      */
     public function refreshTokens()
     {
-        return $this->hasMany(config('rinvex.oauth.models.refresh_token'), 'access_token_id', 'id');
+        return $this->hasMany(config('rinvex.oauth.models.refresh_token'), 'access_token_identifier', 'identifier');
     }
 
     /**

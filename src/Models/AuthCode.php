@@ -37,7 +37,7 @@ class AuthCode extends Model
      * {@inheritdoc}
      */
     protected $fillable = [
-        'id',
+        'identifier',
         'user_id',
         'user_type',
         'client_id',
@@ -49,7 +49,7 @@ class AuthCode extends Model
      * {@inheritdoc}
      */
     protected $casts = [
-        'id' => 'string',
+        'identifier' => 'string',
         'user_id' => 'integer',
         'user_type' => 'string',
         'client_id' => 'integer',
@@ -91,7 +91,7 @@ class AuthCode extends Model
 
         $this->setTable(config('rinvex.oauth.tables.auth_codes'));
         $this->setRules([
-            'id' => 'required|string|strip_tags|max:100',
+            'identifier' => 'required|string|strip_tags|max:100',
             'user_id' => 'required|integer',
             'user_type' => 'required|string|strip_tags|max:150',
             'client_id' => 'required|integer|exists:'.config('rinvex.oauth.tables.clients').',id',
