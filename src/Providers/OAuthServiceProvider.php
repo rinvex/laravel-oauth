@@ -6,6 +6,7 @@ namespace Rinvex\OAuth\Providers;
 
 use DateInterval;
 use Rinvex\OAuth\OAuth;
+use Illuminate\Support\Str;
 use Rinvex\OAuth\Models\Client;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\RequestGuard;
@@ -298,7 +299,7 @@ class OAuthServiceProvider extends ServiceProvider
         return new RequestGuard(function ($request) use ($config) {
             return (new TokenGuard(
                 $this->app->make(ResourceServer::class),
-                new OAuthUserProvider(Auth::createUserProvider($config['provider']), $config['provider']),
+                new OAuthUserProvider(Auth::createUserProvider($config['provider']), Str::singular($config['provider'])),
                 $this->app->make('encrypter')
             ))->user($request);
         }, $this->app['request']);

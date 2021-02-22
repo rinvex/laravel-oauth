@@ -18,7 +18,7 @@ class CreateOauthClientsTable extends Migration
         Schema::create(config('rinvex.oauth.tables.clients'), function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->unsigned();
-            $table->string('provider');
+            $table->string('user_type');
             $table->{$this->jsonable()}('name');
             $table->string('grant_type', 100);
             $table->string('secret', 100)->nullable();
@@ -27,7 +27,7 @@ class CreateOauthClientsTable extends Migration
             $table->timestamps();
 
             // Indexes
-            $table->index(['provider', 'user_id'], 'clients_provider_user_id');
+            $table->index(['user_type', 'user_id'], 'clients_user_type_id');
         });
     }
 

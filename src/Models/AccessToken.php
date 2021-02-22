@@ -39,7 +39,7 @@ class AccessToken extends Model
     protected $fillable = [
         'id',
         'user_id',
-        'provider',
+        'user_type',
         'client_id',
         'name',
         'scopes',
@@ -53,7 +53,7 @@ class AccessToken extends Model
     protected $casts = [
         'id' => 'string',
         'user_id' => 'integer',
-        'provider' => 'string',
+        'user_type' => 'string',
         'client_id' => 'integer',
         'name' => 'string',
         'scopes' => 'array',
@@ -97,7 +97,7 @@ class AccessToken extends Model
         $this->setRules([
             'id' => 'required|string|strip_tags|max:100',
             'user_id' => 'required|integer',
-            'provider' => 'required|string|strip_tags|max:150',
+            'user_type' => 'required|string|strip_tags|max:150',
             'client_id' => 'required|integer|exists:'.config('rinvex.oauth.tables.clients').',id',
             'name' => 'nullable|string|strip_tags|max:150',
             'scopes' => 'nullable|array',
@@ -123,7 +123,7 @@ class AccessToken extends Model
      */
     public function user(): MorphTo
     {
-        return $this->morphTo('user', 'provider', 'user_id', 'id');
+        return $this->morphTo('user', 'user_type', 'user_id', 'id');
     }
 
     /**

@@ -39,7 +39,7 @@ class AuthCode extends Model
     protected $fillable = [
         'id',
         'user_id',
-        'provider',
+        'user_type',
         'client_id',
         'scopes',
         'is_revoked',
@@ -52,7 +52,7 @@ class AuthCode extends Model
     protected $casts = [
         'id' => 'string',
         'user_id' => 'integer',
-        'provider' => 'string',
+        'user_type' => 'string',
         'client_id' => 'integer',
         'scopes' => 'array',
         'is_revoked' => 'boolean',
@@ -95,7 +95,7 @@ class AuthCode extends Model
         $this->setRules([
             'id' => 'required|string|strip_tags|max:100',
             'user_id' => 'required|integer',
-            'provider' => 'required|string|strip_tags|max:150',
+            'user_type' => 'required|string|strip_tags|max:150',
             'client_id' => 'required|integer|exists:'.config('rinvex.oauth.tables.clients').',id',
             'scopes' => 'nullable|array',
             'is_revoked' => 'sometimes|boolean',
@@ -120,6 +120,6 @@ class AuthCode extends Model
      */
     public function user(): MorphTo
     {
-        return $this->morphTo('user', 'provider', 'user_id', 'id');
+        return $this->morphTo('user', 'user_type', 'user_id', 'id');
     }
 }

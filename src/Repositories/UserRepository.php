@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rinvex\OAuth\Repositories;
 
 use RuntimeException;
+use Illuminate\Support\Str;
 use Rinvex\OAuth\Bridge\User;
 use Illuminate\Contracts\Hashing\Hasher;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
@@ -36,7 +37,7 @@ class UserRepository implements UserRepositoryInterface
      */
     public function getUserEntityByUserCredentials($username, $password, $grantType, ClientEntityInterface $clientEntity)
     {
-        if (is_null($model = config('auth.providers.'.$clientEntity->provider.'.model'))) {
+        if (is_null($model = config('auth.providers.'.Str::plural($clientEntity->user_type).'.model'))) {
             throw new RuntimeException('Unable to determine authentication model from configuration.');
         }
 

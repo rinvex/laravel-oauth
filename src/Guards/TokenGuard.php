@@ -58,21 +58,21 @@ class TokenGuard
     }
 
     /**
-     * Determine if the requested provider matches the client's provider.
+     * Determine if the requested user type matches the client's user type.
      *
      * @param \Illuminate\Http\Request $request
      *
      * @return bool
      */
-    protected function hasValidProvider(Request $request)
+    protected function hasValidUserType(Request $request)
     {
         $client = $this->client($request);
 
-        if ($client && ! $client->provider) {
+        if ($client && ! $client->user_type) {
             return true;
         }
 
-        return $client && $client->provider === $this->provider->getProviderName();
+        return $client && $client->user_type === $this->provider->getUserType();
     }
 
     /**
@@ -130,14 +130,14 @@ class TokenGuard
             return;
         }
 
-        if (! $this->hasValidProvider($request)) {
+        if (! $this->hasValidUserType($request)) {
             return;
         }
 
         // If the access token is valid we will retrieve the user according to the user ID
         // associated with the token. We will use the provider implementation which may
         // be used to retrieve users from Eloquent. Next, we'll be ready to continue.
-        [, $userId] = explode(':', $psr->getAttribute('oauth_user_id'));
+        [$userType, $userId] = explode(':', $psr->getAttribute('oauth_user_id'));
         $user = $this->provider->retrieveById($userId ?: null);
 
         if (! $user) {

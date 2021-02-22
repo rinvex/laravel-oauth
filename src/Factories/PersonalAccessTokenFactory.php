@@ -63,7 +63,7 @@ class PersonalAccessTokenFactory
         $accessToken = tap($this->findAccessToken($response), function ($accessToken) use ($user, $name) {
             $accessToken->forceFill([
                 'user_id' => $user->getAuthIdentifier(),
-                'provider' => Str::plural($user->getMorphClass()),
+                'user_type' => $user->getMorphClass(),
                 'name' => $name,
             ])->save();
         });
@@ -113,7 +113,7 @@ class PersonalAccessTokenFactory
             'grant_type' => 'personal_access',
             'client_id' => $client->getRouteKey(),
             'client_secret' => $personalAccessClientSecret,
-            'user_id' => Str::plural($user->getMorphClass()).':'.$user->getAuthIdentifier(),
+            'user_id' => $user->getMorphClass().':'.$user->getRouteKey(),
             'scope' => implode(' ', $scopes),
         ]);
     }

@@ -26,8 +26,8 @@ class ClientRepository implements ClientRepositoryInterface
             $clientIdentifier,
             $record->name,
             $record->redirect,
-            $record->isConfidential(),
-            $record->provider
+            $record->user_type,
+            $record->isConfidential()
         );
     }
 

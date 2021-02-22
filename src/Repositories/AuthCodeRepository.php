@@ -24,14 +24,14 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
         $clientId = $authCodeEntity->getClient()->getIdentifier();
-        [$provider, $userId] = explode(':', $authCodeEntity->getUserIdentifier());
+        [$userType, $userId] = explode(':', $authCodeEntity->getUserIdentifier());
 
         app('rinvex.oauth.auth_code')->create([
             'id' => $authCodeEntity->getIdentifier(),
             'user_id' => $userId,
-            'provider' => $provider,
             'client_id' => app('rinvex.oauth.client')->resolveRouteBinding($clientId)->getKey(),
             'scopes' => $authCodeEntity->getScopes(),
+            'user_type' => $userType,
             'is_revoked' => false,
             'expires_at' => $authCodeEntity->getExpiryDateTime(),
         ]);

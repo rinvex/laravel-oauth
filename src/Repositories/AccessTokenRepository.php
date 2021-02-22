@@ -46,14 +46,14 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
         $clientId = $accessTokenEntity->getClient()->getIdentifier();
-        [$provider, $userId] = explode(':', $accessTokenEntity->getUserIdentifier());
+        [$userType, $userId] = explode(':', $accessTokenEntity->getUserIdentifier());
 
         app('rinvex.oauth.access_token')->create([
             'id' => $accessTokenEntity->getIdentifier(),
             'user_id' => $userId,
-            'provider' => $provider,
             'client_id' => app('rinvex.oauth.client')->resolveRouteBinding($clientId)->getKey(),
             'scopes' => $accessTokenEntity->getScopes(),
+            'user_type' => $userType,
             'is_revoked' => false,
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),

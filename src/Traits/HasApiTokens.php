@@ -23,7 +23,7 @@ trait HasApiTokens
      */
     public function clients(): MorphMany
     {
-        return $this->morphMany(config('rinvex.oauth.models.client'), 'user', 'provider', 'user_id');
+        return $this->morphMany(config('rinvex.oauth.models.client'), 'user', 'user_type', 'user_id');
     }
 
     /**
@@ -33,7 +33,7 @@ trait HasApiTokens
      */
     public function tokens(): MorphMany
     {
-        return $this->morphMany(config('rinvex.oauth.models.client'), 'user', 'provider', 'user_id')->orderBy('created_at', 'desc');
+        return $this->morphMany(config('rinvex.oauth.models.client'), 'user', 'user_type', 'user_id')->orderBy('created_at', 'desc');
     }
 
     /**

@@ -21,20 +21,20 @@ class OAuthUserProvider implements UserProvider
      *
      * @var string
      */
-    protected $providerName;
+    protected $userType;
 
     /**
      * Create a new user provider.
      *
      * @param \Illuminate\Contracts\Auth\UserProvider $provider
-     * @param string                                  $providerName
+     * @param string                                  $userType
      *
      * @return void
      */
-    public function __construct(UserProvider $provider, $providerName)
+    public function __construct(UserProvider $provider, $userType)
     {
         $this->provider = $provider;
-        $this->providerName = $providerName;
+        $this->userType = $userType;
     }
 
     /**
@@ -78,12 +78,12 @@ class OAuthUserProvider implements UserProvider
     }
 
     /**
-     * Get the name of the user provider.
+     * Get the name of the user type.
      *
      * @return string
      */
-    public function getProviderName()
+    public function getUserType()
     {
-        return $this->providerName;
+        return $this->userType;
     }
 }
