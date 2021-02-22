@@ -26,12 +26,15 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
         $clientId = $authCodeEntity->getClient()->getIdentifier();
         [$userType, $userId] = explode(':', $authCodeEntity->getUserIdentifier());
 
+        $userId = method_exists($user = app('cortex.auth.'.$userType), 'unhashId') ? $user->unhashId($userId) : $userId;
+        $clientId = method_exists($client = app('rinvex.oauth.client'), 'unhashId') ? $client->unhashId($clientId) : $clientId;
+
         app('rinvex.oauth.auth_code')->create([
             'id' => $authCodeEntity->getIdentifier(),
             'user_id' => $userId,
-            'client_id' => app('rinvex.oauth.client')->resolveRouteBinding($clientId)->getKey(),
             'scopes' => $authCodeEntity->getScopes(),
             'user_type' => $userType,
+            'client_id' => $clientId,
             'is_revoked' => false,
             'expires_at' => $authCodeEntity->getExpiryDateTime(),
         ]);

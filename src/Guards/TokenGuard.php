@@ -138,6 +138,7 @@ class TokenGuard
         // associated with the token. We will use the provider implementation which may
         // be used to retrieve users from Eloquent. Next, we'll be ready to continue.
         [$userType, $userId] = explode(':', $psr->getAttribute('oauth_user_id'));
+        $userId = method_exists($user = app('cortex.auth.'.$userType), 'unhashId') ? $user->unhashId($userId) : $userId;
         $user = $this->provider->retrieveById($userId ?: null);
 
         if (! $user) {
