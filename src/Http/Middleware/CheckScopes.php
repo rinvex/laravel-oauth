@@ -27,7 +27,7 @@ class CheckScopes
         }
 
         foreach ($scopes as $scope) {
-            if (! $request->user()->tokenCan($scope)) {
+            if (! $request->user()->token()->abilities->map->getRouteKey()->contains($scope)) {
                 throw new MissingScopeException($scope);
             }
         }

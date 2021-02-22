@@ -17,17 +17,11 @@ return [
         'ClientCredentials' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
     ],
 
-    // All of the scopes defined for the application.
-    'scopes' => [],
-
     // Indicates if we should unserializes cookies.
     'unserializes_cookies' => false,
 
     // Indicates if we should ignore incoming CSRF tokens.
     'ignore_csrf_token' => false,
-
-    // Indicates the scope should inherit its parent scope.
-    'with_inherited_scopes' => false,
 
     // The name for API token cookies.
     'cookie' => 'laravel_token',

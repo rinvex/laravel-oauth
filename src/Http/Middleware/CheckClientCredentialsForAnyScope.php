@@ -37,12 +37,8 @@ class CheckClientCredentialsForAnyScope extends CheckCredentials
      */
     protected function validateScopes($accessToken, $scopes)
     {
-        if (in_array('*', $accessToken->scopes)) {
-            return;
-        }
-
         foreach ($scopes as $scope) {
-            if ($accessToken->can($scope)) {
+            if (! $accessToken->abilities->map->getRouteKey()->contains($scope)) {
                 return;
             }
         }

@@ -32,7 +32,6 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
         app('rinvex.oauth.auth_code')->create([
             'id' => $authCodeEntity->getIdentifier(),
             'user_id' => $userId,
-            'scopes' => $authCodeEntity->getScopes(),
             'user_type' => $userType,
             'client_id' => $clientId,
             'is_revoked' => false,

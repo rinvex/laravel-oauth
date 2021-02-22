@@ -47,22 +47,12 @@ trait HasApiTokens
     }
 
     /**
-     * Determine if the current API token has a given scope.
-     *
-     * @param string $scope
-     *
-     * @return bool
-     */
-    public function tokenCan($scope)
-    {
-        return $this->accessToken ? $this->accessToken->can($scope) : false;
-    }
-
-    /**
      * Create a new personal access token for the user.
      *
      * @param string $name
      * @param array  $scopes
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @return \Rinvex\OAuth\PersonalAccessTokenResult
      */

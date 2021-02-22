@@ -41,7 +41,6 @@ class AuthCode extends Model
         'user_id',
         'user_type',
         'client_id',
-        'scopes',
         'is_revoked',
         'expires_at',
     ];
@@ -54,7 +53,6 @@ class AuthCode extends Model
         'user_id' => 'integer',
         'user_type' => 'string',
         'client_id' => 'integer',
-        'scopes' => 'array',
         'is_revoked' => 'boolean',
         'expires_at' => 'datetime',
     ];
@@ -97,7 +95,6 @@ class AuthCode extends Model
             'user_id' => 'required|integer',
             'user_type' => 'required|string|strip_tags|max:150',
             'client_id' => 'required|integer|exists:'.config('rinvex.oauth.tables.clients').',id',
-            'scopes' => 'nullable|array',
             'is_revoked' => 'sometimes|boolean',
             'expires_at' => 'nullable|date',
         ]);

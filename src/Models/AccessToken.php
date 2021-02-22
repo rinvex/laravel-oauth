@@ -6,10 +6,14 @@ namespace Rinvex\OAuth\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Rinvex\Support\Traits\ValidatingTrait;
+use Silber\Bouncer\Database\Concerns\Authorizable;
+use Silber\Bouncer\Database\Concerns\HasAbilities;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class AccessToken extends Model
 {
+    use Authorizable;
+    use HasAbilities;
     use ValidatingTrait;
 
     /**
@@ -42,9 +46,9 @@ class AccessToken extends Model
         'user_type',
         'client_id',
         'name',
-        'scopes',
         'is_revoked',
         'expires_at',
+        'abilities',
     ];
 
     /**
@@ -56,7 +60,6 @@ class AccessToken extends Model
         'user_type' => 'string',
         'client_id' => 'integer',
         'name' => 'string',
-        'scopes' => 'array',
         'is_revoked' => 'boolean',
         'expires_at' => 'date',
     ];
@@ -100,7 +103,6 @@ class AccessToken extends Model
             'user_type' => 'required|string|strip_tags|max:150',
             'client_id' => 'required|integer|exists:'.config('rinvex.oauth.tables.clients').',id',
             'name' => 'nullable|string|strip_tags|max:150',
-            'scopes' => 'nullable|array',
             'is_revoked' => 'sometimes|boolean',
             'expires_at' => 'nullable|date',
         ]);
@@ -134,66 +136,6 @@ class AccessToken extends Model
     public function refreshTokens()
     {
         return $this->hasMany(config('rinvex.oauth.models.refresh_token'), 'access_token_id', 'id');
-    }
-
-    /**
-     * Determine if the token has a given scope.
-     *
-     * @param string $scope
-     *
-     * @return bool
-     */
-    public function can($scope)
-    {
-        if (in_array('*', $this->scopes)) {
-            return true;
-        }
-
-        $scopes = config('rinvex.oauth.with_inherited_scopes')
-            ? $this->resolveInheritedScopes($scope)
-            : [$scope];
-
-        foreach ($scopes as $scope) {
-            if (array_key_exists($scope, array_flip($this->scopes))) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Resolve all possible scopes.
-     *
-     * @param string $scope
-     *
-     * @return array
-     */
-    protected function resolveInheritedScopes($scope)
-    {
-        $parts = explode(':', $scope);
-
-        $partsCount = count($parts);
-
-        $scopes = [];
-
-        for ($i = 1; $i <= $partsCount; $i++) {
-            $scopes[] = implode(':', array_slice($parts, 0, $i));
-        }
-
-        return $scopes;
-    }
-
-    /**
-     * Determine if the token is missing a given scope.
-     *
-     * @param string $scope
-     *
-     * @return bool
-     */
-    public function cant($scope)
-    {
-        return ! $this->can($scope);
     }
 
     /**

@@ -50,12 +50,14 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
 
         $userId = method_exists($user = app('cortex.auth.'.$userType), 'unhashId') ? $user->unhashId($userId) : $userId;
         $clientId = method_exists($client = app('rinvex.oauth.client'), 'unhashId') ? $client->unhashId($clientId) : $clientId;
+        $scopes = array_map(fn ($item) => app('cortex.auth.ability')->unhashId($item->getIdentifier()), $accessTokenEntity->getScopes());
+
         app('rinvex.oauth.access_token')->create([
             'id' => $accessTokenEntity->getIdentifier(),
             'user_id' => $userId,
-            'scopes' => $accessTokenEntity->getScopes(),
             'user_type' => $userType,
             'client_id' => $clientId,
+            'abilities' => $scopes,
             'is_revoked' => false,
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
