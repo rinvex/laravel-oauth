@@ -16,12 +16,14 @@ class CreateOauthAuthCodesTable extends Migration
     public function up(): void
     {
         Schema::create(config('rinvex.oauth.tables.auth_codes'), function (Blueprint $table) {
+            $table->increments('id');
             $table->string('identifier', 100);
             $table->integer('user_id')->unsigned();
             $table->string('user_type');
             $table->integer('client_id')->unsigned();
             $table->boolean('is_revoked')->default(false);
             $table->dateTime('expires_at')->nullable();
+            $table->timestamps();
 
             // Indexes
             $table->unique('identifier');

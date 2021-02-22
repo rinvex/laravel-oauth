@@ -16,6 +16,7 @@ class CreateOauthAccessTokensTable extends Migration
     public function up()
     {
         Schema::create(config('rinvex.oauth.tables.access_tokens'), function (Blueprint $table) {
+            $table->increments('id');
             $table->string('identifier', 100);
             $table->integer('user_id')->unsigned();
             $table->string('user_type');
@@ -23,6 +24,7 @@ class CreateOauthAccessTokensTable extends Migration
             $table->string('name')->nullable();
             $table->boolean('is_revoked')->default(false);
             $table->dateTime('expires_at')->nullable();
+            $table->timestamps();
 
             // Indexes
             $table->unique('identifier');
