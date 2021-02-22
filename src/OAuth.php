@@ -55,20 +55,4 @@ class OAuth
             }
         })->filter()->values()->all();
     }
-
-    /**
-     * The location of the encryption keys.
-     *
-     * @param string $file
-     *
-     * @return string
-     */
-    public static function keyPath($file)
-    {
-        $file = ltrim($file, '/\\');
-
-        return config('rinvex.oauth.key_path')
-            ? rtrim(config('rinvex.oauth.key_path'), '/\\').DIRECTORY_SEPARATOR.$file
-            : storage_path($file);
-    }
 }

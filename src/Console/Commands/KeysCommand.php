@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Console\Commands;
 
-use Rinvex\OAuth\OAuth;
 use phpseclib\Crypt\RSA;
 use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
@@ -39,8 +38,8 @@ class KeysCommand extends Command
         $this->alert($this->description);
 
         [$publicKey, $privateKey] = [
-            OAuth::keyPath('oauth-public.key'),
-            OAuth::keyPath('oauth-private.key'),
+            self::keyPath('oauth-public.key'),
+            self::keyPath('oauth-private.key'),
         ];
 
         if ((file_exists($publicKey) || file_exists($privateKey)) && ! $this->option('force')) {
@@ -53,5 +52,21 @@ class KeysCommand extends Command
 
             $this->info('Encryption keys generated successfully.');
         }
+    }
+
+    /**
+     * The location of the encryption keys.
+     *
+     * @param string $file
+     *
+     * @return string
+     */
+    public static function keyPath($file)
+    {
+        $file = ltrim($file, '/\\');
+
+        return config('rinvex.oauth.key_path')
+            ? rtrim(config('rinvex.oauth.key_path'), '/\\').DIRECTORY_SEPARATOR.$file
+            : storage_path($file);
     }
 }

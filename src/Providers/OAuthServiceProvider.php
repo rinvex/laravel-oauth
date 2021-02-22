@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rinvex\OAuth\Providers;
 
 use DateInterval;
-use Rinvex\OAuth\OAuth;
 use Illuminate\Support\Str;
 use Rinvex\OAuth\Models\Client;
 use Illuminate\Auth\AuthManager;
@@ -265,7 +264,7 @@ class OAuthServiceProvider extends ServiceProvider
         $key = str_replace('\\n', "\n", config("rinvex.oauth.{$type}_key"));
 
         if (! $key) {
-            $key = 'file://'.OAuth::keyPath('oauth-'.$type.'.key');
+            $key = 'file://'.KeysCommand::keyPath('oauth-'.$type.'.key');
         }
 
         return new CryptKey($key, null, false);
