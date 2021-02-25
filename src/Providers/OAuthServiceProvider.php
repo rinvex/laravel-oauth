@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Auth;
 use Rinvex\OAuth\Models\AccessToken;
 use Illuminate\Support\Facades\Event;
 use Rinvex\OAuth\Models\RefreshToken;
-use Rinvex\OAuth\PersonalAccessGrant;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
 use League\OAuth2\Server\ResourceServer;
+use Rinvex\OAuth\Grants\PersonalAccessGrant;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
@@ -41,7 +41,7 @@ use Rinvex\OAuth\Repositories\AuthCodeRepository;
 use Rinvex\OAuth\Console\Commands\RollbackCommand;
 use Rinvex\OAuth\Repositories\AccessTokenRepository;
 use Rinvex\OAuth\Repositories\RefreshTokenRepository;
-use League\OAuth2\Server\Grant\ClientCredentialsGrant;
+use Rinvex\OAuth\Grants\ClientCredentialsGrant;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -123,7 +123,7 @@ class OAuthServiceProvider extends ServiceProvider
     /**
      * Create and configure an instance of the personal access grant.
      *
-     * @return \Rinvex\OAuth\PersonalAccessGrant
+     * @return \Rinvex\OAuth\Grants\PersonalAccessGrant
      */
     protected function makePersonalAccessGrant()
     {

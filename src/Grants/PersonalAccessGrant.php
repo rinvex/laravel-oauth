@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth;
+namespace Rinvex\OAuth\Grants;
 
 use DateInterval;
 use Psr\Http\Message\ServerRequestInterface;
