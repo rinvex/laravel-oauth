@@ -23,7 +23,7 @@ trait HasApiTokens
      */
     public function clients(): MorphMany
     {
-        return $this->morphMany(config('rinvex.oauth.models.client'), 'user', 'provider', 'user_id');
+        return $this->morphMany(config('rinvex.oauth.models.client'), 'user', 'user_type', 'user_id');
     }
 
     /**
@@ -33,7 +33,7 @@ trait HasApiTokens
      */
     public function tokens(): MorphMany
     {
-        return $this->morphMany(config('rinvex.oauth.models.client'), 'user', 'provider', 'user_id')->orderBy('created_at', 'desc');
+        return $this->morphMany(config('rinvex.oauth.models.client'), 'user', 'user_type', 'user_id')->orderBy('created_at', 'desc');
     }
 
     /**
@@ -47,22 +47,12 @@ trait HasApiTokens
     }
 
     /**
-     * Determine if the current API token has a given scope.
-     *
-     * @param string $scope
-     *
-     * @return bool
-     */
-    public function tokenCan($scope)
-    {
-        return $this->accessToken ? $this->accessToken->can($scope) : false;
-    }
-
-    /**
      * Create a new personal access token for the user.
      *
      * @param string $name
      * @param array  $scopes
+     *
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
      * @return \Rinvex\OAuth\PersonalAccessTokenResult
      */

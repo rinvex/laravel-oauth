@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Rinvex\OAuth\Providers;
 
 use DateInterval;
-use Rinvex\OAuth\OAuth;
+use Illuminate\Support\Str;
 use Rinvex\OAuth\Models\Client;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\RequestGuard;
@@ -18,30 +18,30 @@ use Illuminate\Support\Facades\Auth;
 use Rinvex\OAuth\Models\AccessToken;
 use Illuminate\Support\Facades\Event;
 use Rinvex\OAuth\Models\RefreshToken;
-use Rinvex\OAuth\PersonalAccessGrant;
 use Illuminate\Support\Facades\Cookie;
+use Rinvex\OAuth\Grants\AuthCodeGrant;
+use Rinvex\OAuth\Grants\PasswordGrant;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
 use League\OAuth2\Server\ResourceServer;
+use Rinvex\OAuth\Grants\RefreshTokenGrant;
+use Rinvex\OAuth\Grants\PersonalAccessGrant;
 use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
-use League\OAuth2\Server\Grant\PasswordGrant;
 use Rinvex\OAuth\Repositories\UserRepository;
 use Rinvex\OAuth\Console\Commands\KeysCommand;
 use Rinvex\OAuth\Repositories\ScopeRepository;
 use Rinvex\OAuth\Console\Commands\PurgeCommand;
+use Rinvex\OAuth\Grants\ClientCredentialsGrant;
 use Rinvex\OAuth\Repositories\ClientRepository;
 use Rinvex\OAuth\Console\Commands\ClientCommand;
-use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use Rinvex\OAuth\Console\Commands\MigrateCommand;
 use Rinvex\OAuth\Console\Commands\PublishCommand;
 use Rinvex\OAuth\Repositories\AuthCodeRepository;
 use Rinvex\OAuth\Console\Commands\RollbackCommand;
 use Rinvex\OAuth\Repositories\AccessTokenRepository;
 use Rinvex\OAuth\Repositories\RefreshTokenRepository;
-use League\OAuth2\Server\Grant\ClientCredentialsGrant;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -123,7 +123,7 @@ class OAuthServiceProvider extends ServiceProvider
     /**
      * Create and configure an instance of the personal access grant.
      *
-     * @return \Rinvex\OAuth\PersonalAccessGrant
+     * @return \Rinvex\OAuth\Grants\PersonalAccessGrant
      */
     protected function makePersonalAccessGrant()
     {
@@ -264,7 +264,7 @@ class OAuthServiceProvider extends ServiceProvider
         $key = str_replace('\\n', "\n", config("rinvex.oauth.{$type}_key"));
 
         if (! $key) {
-            $key = 'file://'.OAuth::keyPath('oauth-'.$type.'.key');
+            $key = 'file://'.KeysCommand::keyPath('oauth-'.$type.'.key');
         }
 
         return new CryptKey($key, null, false);
@@ -298,7 +298,7 @@ class OAuthServiceProvider extends ServiceProvider
         return new RequestGuard(function ($request) use ($config) {
             return (new TokenGuard(
                 $this->app->make(ResourceServer::class),
-                new OAuthUserProvider(Auth::createUserProvider($config['provider']), $config['provider']),
+                new OAuthUserProvider(Auth::createUserProvider($config['provider']), Str::singular($config['provider'])),
                 $this->app->make('encrypter')
             ))->user($request);
         }, $this->app['request']);

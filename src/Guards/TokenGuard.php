@@ -7,7 +7,6 @@ namespace Rinvex\OAuth\Guards;
 use Exception;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Rinvex\OAuth\TransientToken;
 use Rinvex\OAuth\OAuthUserProvider;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -59,21 +58,21 @@ class TokenGuard
     }
 
     /**
-     * Determine if the requested provider matches the client's provider.
+     * Determine if the requested user type matches the client's user type.
      *
      * @param \Illuminate\Http\Request $request
      *
      * @return bool
      */
-    protected function hasValidProvider(Request $request)
+    protected function hasValidUserType(Request $request)
     {
         $client = $this->client($request);
 
-        if ($client && ! $client->provider) {
+        if ($client && ! $client->user_type) {
             return true;
         }
 
-        return $client && $client->provider === $this->provider->getProviderName();
+        return $client && $client->user_type === $this->provider->getUserType();
     }
 
     /**
@@ -131,14 +130,15 @@ class TokenGuard
             return;
         }
 
-        if (! $this->hasValidProvider($request)) {
+        if (! $this->hasValidUserType($request)) {
             return;
         }
 
         // If the access token is valid we will retrieve the user according to the user ID
         // associated with the token. We will use the provider implementation which may
         // be used to retrieve users from Eloquent. Next, we'll be ready to continue.
-        [, $userId] = explode(':', $psr->getAttribute('oauth_user_id'));
+        [$userType, $userId] = explode(':', $psr->getAttribute('oauth_user_id'));
+        $userId = method_exists($user = app('cortex.auth.'.$userType), 'unhashId') ? $user->unhashId($userId) : $userId;
         $user = $this->provider->retrieveById($userId ?: null);
 
         if (! $user) {
@@ -148,7 +148,7 @@ class TokenGuard
         // Next, we will assign a token instance to this user which the developers may use
         // to determine if the token has a given scope, etc. This will be useful during
         // authorization such as within the developer's Laravel model policy classes.
-        $token = app('rinvex.oauth.access_token')->where('id', $psr->getAttribute('oauth_access_token_id'))->first();
+        $token = app('rinvex.oauth.access_token')->where('identifier', $psr->getAttribute('oauth_access_token_id'))->first();
         $clientId = $psr->getAttribute('oauth_client_id');
 
         // Finally, we will verify if the client that issued this token is still valid and

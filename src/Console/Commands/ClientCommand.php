@@ -23,7 +23,7 @@ class ClientCommand extends Command
             {--personal_access : Create a personal access client}
             {--password : Create a password grant client}
             {--name= : The name of the client}
-            {--provider= : The name of the user provider}
+            {--user_type= : The name of the user type}
             {--redirect_uri= : The URI to redirect to after authorization }
             {--user_id= : The user ID the client should be assigned to }
             {--public : Create a public client (Auth code grant type only) }';
@@ -66,18 +66,18 @@ class ClientCommand extends Command
         $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
         $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
-        $providers = array_keys(config('auth.providers'));
-        $provider = $this->option('provider') ?: $this->choice(
-            'Which user provider should this client use to retrieve users?',
-            $providers,
-            in_array('users', $providers) ? 'users' : null
+        $userTypes = array_map('Str::singular', array_keys(config('auth.providers')));
+        $userType = $this->option('user_type') ?: $this->choice(
+            'Which user type should this client use to retrieve users?',
+            $userTypes,
+            in_array('users', $userTypes) ? 'users' : null
         );
 
         $client = app('rinvex.oauth.client')->create([
             'user_id' => $userId,
             'name' => $name,
             'secret' => Str::random(40),
-            'provider' => $provider,
+            'user_type' => $userType,
             'redirect' => $redirect,
             'grant_type' => 'personal_access',
         ]);
@@ -100,18 +100,18 @@ class ClientCommand extends Command
         $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
         $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
-        $providers = array_keys(config('auth.providers'));
-        $provider = $this->option('provider') ?: $this->choice(
-            'Which user provider should this client use to retrieve users?',
-            $providers,
-            in_array('users', $providers) ? 'users' : null
+        $userTypes = array_map('Str::singular', array_keys(config('auth.providers')));
+        $userType = $this->option('user_type') ?: $this->choice(
+            'Which user type should this client use to retrieve users?',
+            $userTypes,
+            in_array('users', $userTypes) ? 'users' : null
         );
 
         $client = app('rinvex.oauth.client')->create([
             'user_id' => $userId,
             'name' => $name,
             'secret' => Str::random(40),
-            'provider' => $provider,
+            'user_type' => $userType,
             'redirect' => $redirect,
             'grant_type' => 'password',
         ]);
@@ -133,18 +133,18 @@ class ClientCommand extends Command
         $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
         $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
 
-        $providers = array_keys(config('auth.providers'));
-        $provider = $this->option('provider') ?: $this->choice(
-            'Which user provider should this client use to retrieve users?',
-            $providers,
-            in_array('users', $providers) ? 'users' : null
+        $userTypes = array_map('Str::singular', array_keys(config('auth.providers')));
+        $userType = $this->option('user_type') ?: $this->choice(
+            'Which user type should this client use to retrieve users?',
+            $userTypes,
+            in_array('users', $userTypes) ? 'users' : null
         );
 
         $client = app('rinvex.oauth.client')->create([
             'user_id' => $userId,
             'name' => $name,
             'secret' => Str::random(40),
-            'provider' => $provider,
+            'user_type' => $userType,
             'redirect' => null,
             'grant_type' => 'client_credentials',
         ]);
@@ -167,18 +167,18 @@ class ClientCommand extends Command
         $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
         $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
-        $providers = array_keys(config('auth.providers'));
-        $provider = $this->option('provider') ?: $this->choice(
-            'Which user provider should this client use to retrieve users?',
-            $providers,
-            in_array('users', $providers) ? 'users' : null
+        $userTypes = array_map('Str::singular', array_keys(config('auth.providers')));
+        $userType = $this->option('user_type') ?: $this->choice(
+            'Which user type should this client use to retrieve users?',
+            $userTypes,
+            in_array('users', $userTypes) ? 'users' : null
         );
 
         $client = app('rinvex.oauth.client')->create([
             'user_id' => $userId,
             'name' => $name,
             'secret' => ! $this->option('public') ? Str::random(40) : null,
-            'provider' => $provider,
+            'user_type' => $userType,
             'redirect' => $redirect,
             'grant_type' => 'authorization_code',
         ]);

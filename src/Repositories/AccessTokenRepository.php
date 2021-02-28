@@ -46,14 +46,18 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     public function persistNewAccessToken(AccessTokenEntityInterface $accessTokenEntity)
     {
         $clientId = $accessTokenEntity->getClient()->getIdentifier();
-        [$provider, $userId] = explode(':', $accessTokenEntity->getUserIdentifier());
+        [$userType, $userId] = explode(':', $accessTokenEntity->getUserIdentifier());
+
+        $userId = method_exists($user = app('cortex.auth.'.$userType), 'unhashId') ? $user->unhashId($userId) : $userId;
+        $clientId = method_exists($client = app('rinvex.oauth.client'), 'unhashId') ? $client->unhashId($clientId) : $clientId;
+        $scopes = array_map(fn ($item) => app('cortex.auth.ability')->unhashId($item->getIdentifier()), $accessTokenEntity->getScopes());
 
         app('rinvex.oauth.access_token')->create([
-            'id' => $accessTokenEntity->getIdentifier(),
+            'identifier' => $accessTokenEntity->getIdentifier(),
             'user_id' => $userId,
-            'provider' => $provider,
-            'client_id' => app('rinvex.oauth.client')->resolveRouteBinding($clientId)->getKey(),
-            'scopes' => $accessTokenEntity->getScopes(),
+            'user_type' => $userType,
+            'client_id' => $clientId,
+            'abilities' => $scopes,
             'is_revoked' => false,
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -64,21 +68,21 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
     /**
      * Revoke an access token.
      *
-     * @param string $accessTokenId
+     * @param string $tokenId
      *
      * @return mixed
      */
-    public function revokeAccessToken($accessTokenId)
+    public function revokeAccessToken($tokenId)
     {
-        app('rinvex.oauth.access_token')->where('id', $accessTokenId)->update(['is_revoked' => true]);
+        app('rinvex.oauth.access_token')->where('identifier', $tokenId)->update(['is_revoked' => true]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isAccessTokenRevoked($accessTokenId)
+    public function isAccessTokenRevoked($tokenId)
     {
-        if ($accessToken = app('rinvex.oauth.access_token')->where('id', $accessTokenId)->first()) {
+        if ($accessToken = app('rinvex.oauth.access_token')->where('identifier', $tokenId)->first()) {
             return $accessToken->is_revoked;
         }
 

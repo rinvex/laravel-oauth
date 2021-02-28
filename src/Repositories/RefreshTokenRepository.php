@@ -44,8 +44,8 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
         app('rinvex.oauth.refresh_token')->create([
-            'id' => $id = $refreshTokenEntity->getIdentifier(),
-            'access_token_id' => $accessTokenId = $refreshTokenEntity->getAccessToken()->getIdentifier(),
+            'identifier' => $refreshTokenEntity->getIdentifier(),
+            'access_token_identifier' => $refreshTokenEntity->getAccessToken()->getIdentifier(),
             'is_revoked' => false,
             'expires_at' => $refreshTokenEntity->getExpiryDateTime(),
         ]);
@@ -54,25 +54,25 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     /**
      * Revokes the refresh token.
      *
-     * @param string $id
+     * @param string $identifier
      *
      * @return mixed
      */
-    public function revokeRefreshToken($id)
+    public function revokeRefreshToken($identifier)
     {
-        return app('rinvex.oauth.refresh_token')->where('id', $id)->update(['is_revoked' => true]);
+        return app('rinvex.oauth.refresh_token')->where('identifier', $identifier)->update(['is_revoked' => true]);
     }
 
     /**
      * Checks if the refresh token has been revoked.
      *
-     * @param string $id
+     * @param string $identifier
      *
      * @return bool
      */
-    public function isRefreshTokenRevoked($id)
+    public function isRefreshTokenRevoked($identifier)
     {
-        if ($refreshToken = app('rinvex.oauth.refresh_token')->find($id)) {
+        if ($refreshToken = app('rinvex.oauth.refresh_token')->where('identifier', $identifier)->first()) {
             return $refreshToken->is_revoked;
         }
 

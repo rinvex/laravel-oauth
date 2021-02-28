@@ -13,35 +13,13 @@ class AuthCode extends Model
     use ValidatingTrait;
 
     /**
-     * Indicates if the IDs are auto-incrementing.
-     *
-     * @var bool
-     */
-    public $incrementing = false;
-
-    /**
-     * Indicates if the model should be timestamped.
-     *
-     * @var bool
-     */
-    public $timestamps = false;
-
-    /**
-     * The "type" of the primary key ID.
-     *
-     * @var string
-     */
-    protected $keyType = 'string';
-
-    /**
      * {@inheritdoc}
      */
     protected $fillable = [
-        'id',
+        'identifier',
         'user_id',
-        'provider',
+        'user_type',
         'client_id',
-        'scopes',
         'is_revoked',
         'expires_at',
     ];
@@ -50,11 +28,10 @@ class AuthCode extends Model
      * {@inheritdoc}
      */
     protected $casts = [
-        'id' => 'string',
+        'identifier' => 'string',
         'user_id' => 'integer',
-        'provider' => 'string',
+        'user_type' => 'string',
         'client_id' => 'integer',
-        'scopes' => 'array',
         'is_revoked' => 'boolean',
         'expires_at' => 'datetime',
     ];
@@ -93,11 +70,10 @@ class AuthCode extends Model
 
         $this->setTable(config('rinvex.oauth.tables.auth_codes'));
         $this->setRules([
-            'id' => 'required|string|strip_tags|max:100',
+            'identifier' => 'required|string|strip_tags|max:100',
             'user_id' => 'required|integer',
-            'provider' => 'required|string|strip_tags|max:150',
+            'user_type' => 'required|string|strip_tags|max:150',
             'client_id' => 'required|integer|exists:'.config('rinvex.oauth.tables.clients').',id',
-            'scopes' => 'nullable|array',
             'is_revoked' => 'sometimes|boolean',
             'expires_at' => 'nullable|date',
         ]);
@@ -120,6 +96,6 @@ class AuthCode extends Model
      */
     public function user(): MorphTo
     {
-        return $this->morphTo('user', 'provider', 'user_id', 'id');
+        return $this->morphTo('user', 'user_type', 'user_id', 'id');
     }
 }

@@ -16,16 +16,18 @@ class CreateOauthAuthCodesTable extends Migration
     public function up(): void
     {
         Schema::create(config('rinvex.oauth.tables.auth_codes'), function (Blueprint $table) {
-            $table->string('id', 100)->primary();
+            $table->increments('id');
+            $table->string('identifier', 100);
             $table->integer('user_id')->unsigned();
-            $table->string('provider');
+            $table->string('user_type');
             $table->integer('client_id')->unsigned();
-            $table->{$this->jsonable()}('scopes')->nullable();
             $table->boolean('is_revoked')->default(false);
             $table->dateTime('expires_at')->nullable();
+            $table->timestamps();
 
             // Indexes
-            $table->index(['provider', 'user_id'], 'auth_codes_provider_user_id');
+            $table->unique('identifier');
+            $table->index(['user_type', 'user_id'], 'auth_codes_user_type_id');
             $table->foreign('client_id')->references('id')->on(config('rinvex.oauth.tables.clients'))
                   ->onDelete('cascade')->onUpdate('cascade');
         });
@@ -39,19 +41,5 @@ class CreateOauthAuthCodesTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists(config('rinvex.oauth.tables.auth_codes'));
-    }
-
-    /**
-     * Get jsonable column data type.
-     *
-     * @return string
-     */
-    protected function jsonable(): string
-    {
-        $driverName = DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
-        $dbVersion = DB::connection()->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
-        $isOldVersion = version_compare($dbVersion, '5.7.8', 'lt');
-
-        return $driverName === 'mysql' && $isOldVersion ? 'text' : 'json';
     }
 }

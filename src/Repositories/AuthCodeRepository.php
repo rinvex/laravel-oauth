@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Rinvex\OAuth\Repositories;
 
-use Illuminate\Support\Str;
 use Rinvex\OAuth\Bridge\AuthCode;
 use League\OAuth2\Server\Entities\AuthCodeEntityInterface;
 use League\OAuth2\Server\Repositories\AuthCodeRepositoryInterface;
@@ -25,14 +24,16 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
         $clientId = $authCodeEntity->getClient()->getIdentifier();
-        [$provider, $userId] = explode(':', $authCodeEntity->getUserIdentifier());
+        [$userType, $userId] = explode(':', $authCodeEntity->getUserIdentifier());
+
+        $userId = method_exists($user = app('cortex.auth.'.$userType), 'unhashId') ? $user->unhashId($userId) : $userId;
+        $clientId = method_exists($client = app('rinvex.oauth.client'), 'unhashId') ? $client->unhashId($clientId) : $clientId;
 
         app('rinvex.oauth.auth_code')->create([
-            'id' => $authCodeEntity->getIdentifier(),
+            'identifier' => $authCodeEntity->getIdentifier(),
             'user_id' => $userId,
-            'provider' => $provider,
-            'client_id' => app('rinvex.oauth.client')->resolveRouteBinding($clientId)->getKey(),
-            'scopes' => $authCodeEntity->getScopes(),
+            'user_type' => $userType,
+            'client_id' => $clientId,
             'is_revoked' => false,
             'expires_at' => $authCodeEntity->getExpiryDateTime(),
         ]);
@@ -43,7 +44,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function revokeAuthCode($codeId)
     {
-        app('rinvex.oauth.auth_code')->where('id', $codeId)->update(['is_revoked' => true]);
+        app('rinvex.oauth.auth_code')->where('identifier', $codeId)->update(['is_revoked' => true]);
     }
 
     /**
@@ -51,6 +52,6 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
      */
     public function isAuthCodeRevoked($codeId)
     {
-        return app('rinvex.oauth.auth_code')->where('id', $codeId)->where('is_revoked', true)->exists();
+        return app('rinvex.oauth.auth_code')->where('identifier', $codeId)->where('is_revoked', true)->exists();
     }
 }
