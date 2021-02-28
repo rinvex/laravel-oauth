@@ -30,7 +30,7 @@ class ClientCredentialsGrant extends AbstractGrant
 
         $client = $this->getClientEntityOrFail($clientId, $request);
 
-        if (!$client->isConfidential()) {
+        if (! $client->isConfidential()) {
             $this->getEmitter()->emit(new RequestEvent(RequestEvent::CLIENT_AUTHENTICATION_FAILED, $request));
 
             throw OAuthServerException::invalidClient($request);

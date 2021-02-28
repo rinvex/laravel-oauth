@@ -60,13 +60,12 @@ class AuthCodeGrant extends BaseAuthCodeGrant
                 $client,
                 $authCodePayload->user_id
             );
-
         } catch (LogicException $e) {
             throw OAuthServerException::invalidRequest('code', 'Cannot decrypt the authorization code', $e);
         }
 
         // Validate code challenge
-        if (!empty($authCodePayload->code_challenge)) {
+        if (! empty($authCodePayload->code_challenge)) {
             $codeVerifier = $this->getRequestParameter('code_verifier', $request, null);
 
             if ($codeVerifier === null) {
@@ -160,7 +159,7 @@ class AuthCodeGrant extends BaseAuthCodeGrant
     /**
      * Validate the authorization code user.
      *
-     * @param stdClass               $authCodePayload
+     * @param stdClass $authCodePayload
      */
     protected function validateUser(stdClass $authCodePayload)
     {

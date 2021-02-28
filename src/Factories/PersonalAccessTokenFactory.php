@@ -6,7 +6,6 @@ namespace Rinvex\OAuth\Factories;
 
 use RuntimeException;
 use Nyholm\Psr7\Response;
-use Illuminate\Support\Str;
 use Nyholm\Psr7\ServerRequest;
 use Rinvex\OAuth\Models\Client;
 use Lcobucci\JWT\Parser as JwtParser;
