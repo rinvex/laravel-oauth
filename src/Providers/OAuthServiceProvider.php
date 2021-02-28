@@ -19,29 +19,29 @@ use Rinvex\OAuth\Models\AccessToken;
 use Illuminate\Support\Facades\Event;
 use Rinvex\OAuth\Models\RefreshToken;
 use Illuminate\Support\Facades\Cookie;
+use Rinvex\OAuth\Grants\PasswordGrant;
+use Rinvex\OAuth\Grants\AuthCodeGrant;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
 use League\OAuth2\Server\ResourceServer;
+use Rinvex\OAuth\Grants\RefreshTokenGrant;
 use Rinvex\OAuth\Grants\PersonalAccessGrant;
-use League\OAuth2\Server\AuthorizationServer;
-use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
-use League\OAuth2\Server\Grant\PasswordGrant;
+use League\OAuth2\Server\AuthorizationServer;
 use Rinvex\OAuth\Repositories\UserRepository;
 use Rinvex\OAuth\Console\Commands\KeysCommand;
 use Rinvex\OAuth\Repositories\ScopeRepository;
+use Rinvex\OAuth\Grants\ClientCredentialsGrant;
 use Rinvex\OAuth\Console\Commands\PurgeCommand;
 use Rinvex\OAuth\Repositories\ClientRepository;
 use Rinvex\OAuth\Console\Commands\ClientCommand;
-use League\OAuth2\Server\Grant\RefreshTokenGrant;
 use Rinvex\OAuth\Console\Commands\MigrateCommand;
 use Rinvex\OAuth\Console\Commands\PublishCommand;
 use Rinvex\OAuth\Repositories\AuthCodeRepository;
 use Rinvex\OAuth\Console\Commands\RollbackCommand;
 use Rinvex\OAuth\Repositories\AccessTokenRepository;
 use Rinvex\OAuth\Repositories\RefreshTokenRepository;
-use Rinvex\OAuth\Grants\ClientCredentialsGrant;
 
 class OAuthServiceProvider extends ServiceProvider
 {

@@ -14,7 +14,15 @@ use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 class ClientCredentialsGrant extends AbstractGrant
 {
     /**
-     * {@inheritdoc}
+     * Respond to an access token request.
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseTypeInterface  $responseType
+     * @param DateInterval           $accessTokenTTL
+     *
+     * @throws OAuthServerException
+     *
+     * @return ResponseTypeInterface
      */
     public function respondToAccessTokenRequest(ServerRequestInterface $request, ResponseTypeInterface $responseType, DateInterval $accessTokenTTL)
     {
@@ -30,6 +38,7 @@ class ClientCredentialsGrant extends AbstractGrant
 
         // Validate request
         $this->validateClient($request);
+        $this->validateUser($request);
 
         $scopes = $this->validateScopes($this->getRequestParameter('scope', $request, $this->defaultScope));
 
@@ -46,6 +55,22 @@ class ClientCredentialsGrant extends AbstractGrant
         $responseType->setAccessToken($accessToken);
 
         return $responseType;
+    }
+
+    /**
+     * Validate the authorization code user.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *
+     * @throws \League\OAuth2\Server\Exception\OAuthServerException
+     */
+    protected function validateUser(ServerRequestInterface $request)
+    {
+        [$userType, $userId] = explode(':', $this->getRequestParameter('user_id', $request));
+
+        if ($userType !== request()->user()->getMorphClass() || $userId !== request()->user()->getRouteKey()) {
+            throw OAuthServerException::invalidRequest('user_id', 'This action is not authorized to this user');
+        }
     }
 
     /**

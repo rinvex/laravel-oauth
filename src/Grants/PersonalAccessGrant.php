@@ -7,19 +7,26 @@ namespace Rinvex\OAuth\Grants;
 use DateInterval;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\Grant\AbstractGrant;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use League\OAuth2\Server\ResponseTypes\ResponseTypeInterface;
 
 class PersonalAccessGrant extends AbstractGrant
 {
     /**
-     * {@inheritdoc}
+     * Respond to an access token request.
+     *
+     * @param ServerRequestInterface $request
+     * @param ResponseTypeInterface  $responseType
+     * @param DateInterval           $accessTokenTTL
+     *
+     * @throws OAuthServerException
+     *
+     * @return ResponseTypeInterface
      */
-    public function respondToAccessTokenRequest(
-        ServerRequestInterface $request,
-        ResponseTypeInterface $responseType,
-        DateInterval $accessTokenTTL
-    ) {
+    public function respondToAccessTokenRequest(ServerRequestInterface $request, ResponseTypeInterface $responseType, DateInterval $accessTokenTTL)
+    {
         // Validate request
+        $this->validateUser($request);
         $client = $this->validateClient($request);
         $scopes = $this->validateScopes($this->getRequestParameter('scope', $request));
 
@@ -38,6 +45,22 @@ class PersonalAccessGrant extends AbstractGrant
         $responseType->setAccessToken($accessToken);
 
         return $responseType;
+    }
+
+    /**
+     * Validate the authorization code user.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request
+     *
+     * @throws \League\OAuth2\Server\Exception\OAuthServerException
+     */
+    protected function validateUser(ServerRequestInterface $request)
+    {
+        [$userType, $userId] = explode(':', $this->getRequestParameter('user_id', $request));
+
+        if ($userType !== request()->user()->getMorphClass() || $userId !== request()->user()->getRouteKey()) {
+            throw OAuthServerException::invalidRequest('user_id', 'This action is not authorized to this user');
+        }
     }
 
     /**
