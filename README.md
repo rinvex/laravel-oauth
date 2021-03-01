@@ -50,8 +50,6 @@
     - [Assigning Scopes To Tokens](#assigning-scopes-to-tokens)
     - [Checking Scopes](#checking-scopes)
 - [Consuming Your API With JavaScript](#consuming-your-api-with-javascript)
-- [Events](#events)
-- [Testing](#testing)
 
 <a name="introduction"></a>
 ## Introduction
@@ -904,7 +902,7 @@ This middleware will attach a `laravel_token` cookie to your outgoing responses.
     ```
 
 <a name="customizing-the-cookie-name"></a>
-#### Customizing The Cookie Name
+### Customizing The Cookie Name
 
 If needed, you can customize the `laravel_token` cookie's name using the corresponding config option. First you'll need to publish the config file using this command `php artisan rinvex:publish:oauth --resource=config`, then you can modify as follows:
     ```php
@@ -912,7 +910,7 @@ If needed, you can customize the `laravel_token` cookie's name using the corresp
     ```
 
 <a name="csrf-protection"></a>
-#### CSRF Protection
+### CSRF Protection
 
 When using this method of authentication, you will need to ensure a valid CSRF token header is included in your requests. The default Laravel JavaScript scaffolding includes an Axios instance, which will automatically use the encrypted `XSRF-TOKEN` cookie value to send a `X-XSRF-TOKEN` header on same-origin requests.
 
