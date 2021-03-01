@@ -580,7 +580,7 @@ When authenticating using the password grant, **Rinvex OAuth** will use the `pas
         use HasApiTokens, Notifiable;
 
         /**
-         * Validate the password of the user for the Passport password grant.
+         * Validate the password of the user for the OAuth password grant.
          *
          * @param  string  $password
          * @return bool
@@ -697,8 +697,8 @@ Before your application can issue personal access tokens, you will need to creat
 
 After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
     ```shell
-    PASSPORT_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
-    PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
+    OAUTH_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
+    OAUTH_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
     ```
 
 You can also configure this through the config file, by publishing it first using this command `php artisan rinvex:publish:oauth --resource=config`, then updating the relevant option:
@@ -906,7 +906,7 @@ This middleware will attach a `laravel_token` cookie to your outgoing responses.
 <a name="customizing-the-cookie-name"></a>
 #### Customizing The Cookie Name
 
-If needed, you can customize the `laravel_token` cookie's name using the corresponding config option. First you'll need to publish the config file using this command `php artisan rinvex:publish:oauth --resource=config` `Passport::cookie`, then you can modify it as needed:
+If needed, you can customize the `laravel_token` cookie's name using the corresponding config option. First you'll need to publish the config file using this command `php artisan rinvex:publish:oauth --resource=config`, then you can modify as follows:
     ```php
     'default_scope' => null,
     ```
