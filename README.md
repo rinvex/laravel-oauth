@@ -82,8 +82,6 @@ Installing **Rinvex OAuth** does NOT require Laravel Passport. It is in fact a c
 
 3. Add the `Rinvex\OAuth\Traits\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
     ```php
-    <?php
-
     namespace App\Models;
 
     use Rinvex\OAuth\Traits\HasApiTokens;
@@ -102,7 +100,7 @@ Installing **Rinvex OAuth** does NOT require Laravel Passport. It is in fact a c
             'driver' => 'session',
             'provider' => 'users',
         ],
-
+    
         'api' => [
             'driver' => 'oauth',
             'provider' => 'users',
@@ -115,9 +113,9 @@ Installing **Rinvex OAuth** does NOT require Laravel Passport. It is in fact a c
 ### Deploying Rinvex OAuth
 
 When deploying **Rinvex OAuth** to your application's servers for the first time, you will likely need to run the `rinvex:oauth:keys` command. This command generates the encryption keys **Rinvex OAuth** needs in order to generate access tokens. The generated keys are not typically kept in source control:
-    ```shell
-    php artisan rinvex:oauth:keys
-    ```
+```shell
+php artisan rinvex:oauth:keys
+```
 
 If necessary, you may define the path where **Rinvex OAuth**'s keys should be loaded from. You may use the `rinvex.oauth.key_path` config option to accomplish this. Typically, this config option is null and the encryption keys are storged in `storage_path` by default.
 
@@ -125,22 +123,22 @@ If necessary, you may define the path where **Rinvex OAuth**'s keys should be lo
 #### Loading Keys From The Environment
 
 Alternatively, you may publish **Rinvex OAuth**'s configuration file using the `rinvex:publish:oauth` Artisan command:
-    ```shell
-    php artisan rinvex:publish:oauth --resource=config
-    ```
+```shell
+php artisan rinvex:publish:oauth --resource=config
+```
 
 After the configuration file has been published, you may load your application's encryption keys by defining them as environment variables:
-    ```shell
-    OAUTH_KEY_PATH="./storage/keys"
+```shell
+OAUTH_KEY_PATH="./storage/keys"
 
-    OAUTH_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
-    <private key here>
-    -----END RSA PRIVATE KEY-----"
-    
-    OAUTH_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
-    <public key here>
-    -----END PUBLIC KEY-----"
-    ```
+OAUTH_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
+<private key here>
+-----END RSA PRIVATE KEY-----"
+
+OAUTH_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
+<public key here>
+-----END PUBLIC KEY-----"
+```
 
 <a name="migration-customization"></a>
 ### Migration Customization
@@ -167,24 +165,24 @@ By default, **Rinvex OAuth** issues long-lived access tokens that expire after o
 ### Overriding Default Models
 
 You are free to extend the models used internally by **Rinvex OAuth** by defining your own model and extending the corresponding **Rinvex OAuth** model:
-    ```php
-    use Rinvex\OAuth\Models\Client as BaseClient;
+```php
+use Rinvex\OAuth\Models\Client as BaseClient;
 
-    class Client extends BaseClient
-    {
-        // ...
-    }
-    ```
+class Client extends BaseClient
+{
+    // ...
+}
+```
 
-After defining your model, you may instruct **Rinvex OAuth** to use your custom model via config options `rinvex.oauth.models`.
-    ```php
-    'models' => [
-        'client' => \Rinvex\OAuth\Models\Client::class,
-        'auth_code' => \Rinvex\OAuth\Models\AuthCode::class,
-        'access_token' => \Rinvex\OAuth\Models\AccessToken::class,
-        'refresh_token' => \Rinvex\OAuth\Models\RefreshToken::class,
-    ],
-    ```
+After defining your model, you may instruct **Rinvex OAuth** to use your custom model via config options `rinvex.oauth.models`:
+```php
+'models' => [
+    'client' => \Rinvex\OAuth\Models\Client::class,
+    'auth_code' => \Rinvex\OAuth\Models\AuthCode::class,
+    'access_token' => \Rinvex\OAuth\Models\AccessToken::class,
+    'refresh_token' => \Rinvex\OAuth\Models\RefreshToken::class,
+],
+```
 
 <a name="issuing-access-tokens"></a>
 ## Issuing Access Tokens
@@ -200,16 +198,16 @@ First, developers building applications that need to interact with your applicat
 #### The `rinvex:oauth:client` Command
 
 The simplest way to create a client is using the `rinvex:oauth:client` Artisan command. This command may be used to create your own clients for testing your OAuth2 functionality. When you run the `client` command, **Rinvex OAuth** will prompt you for more information about your client and will provide you with a client ID and secret:
-    ```shell
-    php artisan rinvex:oauth:client
-    ```
+```shell
+php artisan rinvex:oauth:client
+```
 
 **Redirect URLs**
 
 If you would like to allow multiple redirect URLs for your client, you may specify them using a comma-delimited list when prompted for the URL by the `rinvex:oauth:client` command. Any URLs which contain commas should be URL encoded:
-    ```shell
-    http://third-party-client-app.com/oauth/callback,http://fourth-party-client-app.com/oauth/callback
-    ```
+```shell
+http://third-party-client-app.com/oauth/callback,http://fourth-party-client-app.com/oauth/callback
+```
 
 <a name="clients-frontend-interface"></a>
 #### Dashboard Interface
@@ -225,23 +223,23 @@ Check [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth) documentation f
 #### Redirecting For Authorization
 
 Once a client has been created, developers may use their client ID and secret to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
-    ```php
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Str;
+```php
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-    Route::middleware(['web'])->get('oauth/redirect', function (Request $request) {
-        $request->session()->put('state', $state = Str::random(40));
-        $query = http_build_query([
-            'client_id' => 'client-id',
-            'redirect_uri' => 'http://third-party-client-app.com/callback',
-            'response_type' => 'code',
-            'scope' => 'scope-id-1 scope-id-2',
-            'state' => $state,
-        ]);
-    
-        return redirect('http://oauth-server-app.com/oauth/authorize?'.$query);
-    });
-    ```
+Route::middleware(['web'])->get('oauth/redirect', function (Request $request) {
+    $request->session()->put('state', $state = Str::random(40));
+    $query = http_build_query([
+        'client_id' => 'client-id',
+        'redirect_uri' => 'http://third-party-client-app.com/callback',
+        'response_type' => 'code',
+        'scope' => 'scope-id-1 scope-id-2',
+        'state' => $state,
+    ]);
+
+    return redirect('http://oauth-server-app.com/oauth/authorize?'.$query);
+});
+```
 
 > **Notes:**
 > - Scopes must be valid abilities, already created, and assigned to the user who is processing this authorization request.
@@ -253,56 +251,56 @@ Once a client has been created, developers may use their client ID and secret to
 If you're using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth), when receiving authorization requests, **Cortex OAuth** will automatically display a template to the user allowing them to approve or deny the authorization request. If they approve the request, they will be redirected back to the `redirect_uri` that was specified by the consuming application. The `redirect_uri` must match the `redirect` URL that was specified when the client was created.
 
 If you would like to customize the authorization approval screen, you may publish **Rinvex OAuth**'s views using the `cortex:publish:oauth` Artisan command. The published views will be placed in the `resources/views/vendor/cortex/oauth` directory:
-    ```shell
-    php artisan cortex:publish:oauth --resource=views
-    ```
+```shell
+php artisan cortex:publish:oauth --resource=views
+```
 
 Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately:
-    ```php
-    use Rinvex\OAuth\Models\Client as BaseClient;
+```php
+use Rinvex\OAuth\Models\Client as BaseClient;
 
-    class Client extends BaseClient
+class Client extends BaseClient
+{
+    /**
+     * Determine if the client should skip the authorization prompt.
+     *
+     * @return bool
+     */
+    public function skipsAuthorization()
     {
-        /**
-         * Determine if the client should skip the authorization prompt.
-         *
-         * @return bool
-         */
-        public function skipsAuthorization()
-        {
-            return $this->firstParty();
-        }
+        return $this->firstParty();
     }
-    ```
+}
+```
 
 <a name="requesting-tokens-converting-authorization-codes-to-access-tokens"></a>
 #### Converting Authorization Codes To Access Tokens
 
 If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should first verify the `state` parameter against the value that was stored prior to the redirect. If the state parameter matches then the consumer should issue a `POST` request to your application to request an access token. The request should include the authorization code that was issued by your application when the user approved the authorization request:
-    ```php
-    use Illuminate\Http\Request;
-    use InvalidArgumentException;
-    use Illuminate\Support\Facades\Http;
+```php
+use Illuminate\Http\Request;
+use InvalidArgumentException;
+use Illuminate\Support\Facades\Http;
 
-    Route::middleware(['web'])->get('oauth/callback', function (Request $request) {
-        $state = $request->session()->pull('state');
+Route::middleware(['web'])->get('oauth/callback', function (Request $request) {
+    $state = $request->session()->pull('state');
 
-        throw_unless(
-            strlen($state) > 0 && $state === $request->state,
-            InvalidArgumentException::class
-        );
+    throw_unless(
+        strlen($state) > 0 && $state === $request->state,
+        InvalidArgumentException::class
+    );
 
-        $response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
-            'grant_type' => 'authorization_code',
-            'client_id' => 'client-id',
-            'client_secret' => 'client-secret',
-            'redirect_uri' => 'http://third-party-client-app.com/oauth/callback',
-            'code' => $request->code,
-        ]);
+    $response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
+        'grant_type' => 'authorization_code',
+        'client_id' => 'client-id',
+        'client_secret' => 'client-secret',
+        'redirect_uri' => 'http://third-party-client-app.com/oauth/callback',
+        'code' => $request->code,
+    ]);
 
-        return $response->json();
-    });
-    ```
+    return $response->json();
+});
+```
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
@@ -312,19 +310,19 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 ### Refreshing Tokens
 
 If your application issues short-lived access tokens, users will need to refresh their access tokens via the refresh token that was provided to them when the access token was issued:
-    ```php
-    use Illuminate\Support\Facades\Http;
+```php
+use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
-        'grant_type' => 'refresh_token',
-        'refresh_token' => 'the-refresh-token',
-        'client_id' => 'client-id',
-        'client_secret' => 'client-secret',
-        'scope' => 'scope-id-1 scope-id-2',
-    ]);
+$response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
+    'grant_type' => 'refresh_token',
+    'refresh_token' => 'the-refresh-token',
+    'client_id' => 'client-id',
+    'client_secret' => 'client-secret',
+    'scope' => 'scope-id-1 scope-id-2',
+]);
 
-    return $response->json();
-    ```
+return $response->json();
+```
 
 This `/oauth/token` route will return a JSON response containing `access_token`, `refresh_token`, and `expires_in` attributes. The `expires_in` attribute contains the number of seconds until the access token expires.
 
@@ -332,55 +330,55 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 ### Revoking Tokens
 
 You may revoke access token by using the `revoke` method on the `Rinvex\OAuth\Models\AccessToken`.
-    ```php
-    app('rinvex.oauth.access_token')->where('identifier', $tokenId)->get()->revoke();
-    ```
+```php
+app('rinvex.oauth.access_token')->where('identifier', $tokenId)->get()->revoke();
+```
 
 Alternatively, you can achieve the same result directly by using the `revokeAccessToken` method on the `Rinvex\OAuth\Repositories\AccessTokenRepository`.
-    ```php
-    use Rinvex\OAuth\Repositories\AccessTokenRepository;
-    use Rinvex\OAuth\Repositories\RefreshTokenRepository;
+```php
+use Rinvex\OAuth\Repositories\AccessTokenRepository;
+use Rinvex\OAuth\Repositories\RefreshTokenRepository;
 
-    // Revoke an access token...
-    $accessTokenRepository = app(AccessTokenRepository::class);
-    $accessTokenRepository->revokeAccessToken($tokenId);
-    ```
+// Revoke an access token...
+$accessTokenRepository = app(AccessTokenRepository::class);
+$accessTokenRepository->revokeAccessToken($tokenId);
+```
 
 > **Note:** Revoking access token, will revoke all associated refresh tokens as well.
 
 You may revoke a specific refresh token by using the `revoke` method on the `Rinvex\OAuth\Models\RefreshToken`.
-    ```php
-    app('rinvex.oauth.refresh_token')->where('identifier', $tokenId)->get()->revoke();
-    ```
+```php
+app('rinvex.oauth.refresh_token')->where('identifier', $tokenId)->get()->revoke();
+```
 
 <a name="purging-tokens"></a>
 ### Purging Tokens
 
 When tokens have been revoked or expired, you might want to purge them from the database. **Rinvex OAuth**'s included `rinvex:oauth:purge` Artisan command can do this for you:
-    ```shell
-    # Purge revoked and expired tokens and auth codes...
-    php artisan rinvex:oauth:purge
+```shell
+# Purge revoked and expired tokens and auth codes...
+php artisan rinvex:oauth:purge
 
-    # Only purge revoked tokens and auth codes...
-    php artisan rinvex:oauth:purge --revoked
+# Only purge revoked tokens and auth codes...
+php artisan rinvex:oauth:purge --revoked
 
-    # Only purge expired tokens and auth codes...
-    php artisan rinvex:oauth:purge --expired
-    ```
+# Only purge expired tokens and auth codes...
+php artisan rinvex:oauth:purge --expired
+```
 
 You may also configure a [scheduled job](https://laravel.com/docs/master/scheduling) in your application's `App\Console\Kernel` class to automatically prune your tokens on a schedule:
-    ```php
-    /**
-     * Define the application's command schedule.
-     *
-     * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
-     * @return void
-     */
-    protected function schedule(Schedule $schedule)
-    {
-        $schedule->command('rinvex:oauth:purge')->hourly();
-    }
-    ```
+```php
+/**
+ * Define the application's command schedule.
+ *
+ * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
+ * @return void
+ */
+protected function schedule(Schedule $schedule)
+{
+    $schedule->command('rinvex:oauth:purge')->hourly();
+}
+```
 
 <a name="code-grant-pkce"></a>
 ## Authorization Code Grant with PKCE
@@ -391,9 +389,9 @@ The Authorization Code grant with "Proof Key for Code Exchange" (PKCE) is a secu
 ### Creating The Client
 
 Before your application can issue tokens via the authorization code grant with PKCE, you will need to create a PKCE-enabled client. You may do this using the `rinvex:oauth:client` Artisan command with the `--public` option:
-    ```shell
-    php artisan rinvex:oauth:client --public
-    ```
+```shell
+php artisan rinvex:oauth:client --public
+```
 
 <a name="requesting-auth-pkce-grant-tokens"></a>
 ### Requesting Tokens
@@ -406,44 +404,44 @@ As this authorization grant does not provide a client secret, developers will ne
 The code verifier should be a random string of between 43 and 128 characters containing letters, numbers, and  `"-"`, `"."`, `"_"`, `"~"` characters, as defined in the [RFC 7636 specification](https://tools.ietf.org/html/rfc7636).
 
 The code challenge should be a Base64 encoded string with URL and filename-safe characters. The trailing `'='` characters should be removed and no line breaks, whitespace, or other additional characters should be present.
-    ```php
-    $encoded = base64_encode(hash('sha256', $code_verifier, true));
+```php
+$encoded = base64_encode(hash('sha256', $code_verifier, true));
 
-    $codeChallenge = strtr(rtrim($encoded, '='), '+/', '-_');
-    ```
+$codeChallenge = strtr(rtrim($encoded, '='), '+/', '-_');
+```
 
 <a name="code-grant-pkce-redirecting-for-authorization"></a>
 #### Redirecting For Authorization
 
 Once a client has been created, you may use the client ID and the generated code verifier and code challenge to request an authorization code and access token from your application. First, the consuming application should make a redirect request to your application's `/oauth/authorize` route:
-    ```php
-    use Illuminate\Support\Str;
-    use Illuminate\Http\Request;
+```php
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
-    Route::get('oauth/redirect', function (Request $request) {
-        $request->session()->put('state', $state = Str::random(40));
+Route::get('oauth/redirect', function (Request $request) {
+    $request->session()->put('state', $state = Str::random(40));
 
-        $request->session()->put(
-            'code_verifier', $code_verifier = Str::random(128)
-        );
+    $request->session()->put(
+        'code_verifier', $code_verifier = Str::random(128)
+    );
 
-        $codeChallenge = strtr(rtrim(
-            base64_encode(hash('sha256', $code_verifier, true))
-        , '='), '+/', '-_');
+    $codeChallenge = strtr(rtrim(
+        base64_encode(hash('sha256', $code_verifier, true))
+    , '='), '+/', '-_');
 
-        $query = http_build_query([
-            'client_id' => 'client-id',
-            'redirect_uri' => 'http://third-party-app.com/callback',
-            'response_type' => 'code',
-            'scope' => 'scope-id-1 scope-id-2',
-            'state' => $state,
-            'code_challenge' => $codeChallenge,
-            'code_challenge_method' => 'S256',
-        ]);
+    $query = http_build_query([
+        'client_id' => 'client-id',
+        'redirect_uri' => 'http://third-party-app.com/callback',
+        'response_type' => 'code',
+        'scope' => 'scope-id-1 scope-id-2',
+        'state' => $state,
+        'code_challenge' => $codeChallenge,
+        'code_challenge_method' => 'S256',
+    ]);
 
-        return redirect('http://oauth-server-app.com/oauth/authorize?'.$query);
-    });
-    ```
+    return redirect('http://oauth-server-app.com/oauth/authorize?'.$query);
+});
+```
 
 <a name="code-grant-pkce-converting-authorization-codes-to-access-tokens"></a>
 #### Converting Authorization Codes To Access Tokens
@@ -451,31 +449,31 @@ Once a client has been created, you may use the client ID and the generated code
 If the user approves the authorization request, they will be redirected back to the consuming application. The consumer should verify the `state` parameter against the value that was stored prior to the redirect, as in the standard Authorization Code Grant.
 
 If the state parameter matches, the consumer should issue a `POST` request to your application to request an access token. The request should include the authorization code that was issued by your application when the user approved the authorization request along with the originally generated code verifier:
-    ```php
-    use Illuminate\Http\Request;
-    use Illuminate\Support\Facades\Http;
+```php
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
-    Route::get('callback', function (Request $request) {
-        $state = $request->session()->pull('state');
+Route::get('callback', function (Request $request) {
+    $state = $request->session()->pull('state');
 
-        $codeVerifier = $request->session()->pull('code_verifier');
+    $codeVerifier = $request->session()->pull('code_verifier');
 
-        throw_unless(
-            strlen($state) > 0 && $state === $request->state,
-            InvalidArgumentException::class
-        );
+    throw_unless(
+        strlen($state) > 0 && $state === $request->state,
+        InvalidArgumentException::class
+    );
 
-        $response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
-            'grant_type' => 'authorization_code',
-            'client_id' => 'client-id',
-            'redirect_uri' => 'http://third-party-app.com/callback',
-            'code_verifier' => $codeVerifier,
-            'code' => $request->code,
-        ]);
+    $response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
+        'grant_type' => 'authorization_code',
+        'client_id' => 'client-id',
+        'redirect_uri' => 'http://third-party-app.com/callback',
+        'code_verifier' => $codeVerifier,
+        'code' => $request->code,
+    ]);
 
-        return $response->json();
-    });
-    ```
+    return $response->json();
+});
+```
 
 <a name="password-grant-tokens"></a>
 ## Password Grant Tokens
@@ -486,28 +484,28 @@ The OAuth2 password grant allows your other first-party clients, such as a mobil
 ### Creating A Password Grant Client
 
 Before your application can issue tokens via the password grant, you will need to create a password grant client. You may do this using the `rinvex:oauth:client` Artisan command with the `--password` option. **If you are using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth) and you have already run the `cortex:install:oauth` command, you do not need to run this command:**
-    ```shell
-    php artisan rinvex:oauth:client --password
-    ```
+```shell
+php artisan rinvex:oauth:client --password
+```
 
 <a name="requesting-password-grant-tokens"></a>
 ### Requesting Tokens
 
 Once you have created a password grant client, you may request an access token by issuing a `POST` request to the `/oauth/token` route with the user's email address and password. Remember, If you are using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth), this route is already registered for you, so there is no need to define it manually. If the request is successful, you will receive an `access_token` and `refresh_token` in the JSON response from the server:
-    ```php
-    use Illuminate\Support\Facades\Http;
+```php
+use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
-        'grant_type' => 'password',
-        'client_id' => 'client-id',
-        'client_secret' => 'client-secret',
-        'username' => 'my@email.com',
-        'password' => 'my-password',
-        'scope' => 'scope-id-1 scope-id-2',
-    ]);
+$response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
+    'grant_type' => 'password',
+    'client_id' => 'client-id',
+    'client_secret' => 'client-secret',
+    'username' => 'my@email.com',
+    'password' => 'my-password',
+    'scope' => 'scope-id-1 scope-id-2',
+]);
 
-    return $response->json();
-    ```
+return $response->json();
+```
 
 > **Note: Remember, access tokens are long-lived by default. However, you are free to [configure your maximum access token lifetime](#configuration) if needed.
 
@@ -515,18 +513,18 @@ Once you have created a password grant client, you may request an access token b
 ### Requesting All Scopes
 
 When using the password grant or client credentials grant, you may wish to authorize the token for all of the scopes supported by your application. You can do this by requesting the `*` scope. If you request the `*` scope, the `can` method on the token instance will always return `true`. This scope may only be assigned to a token that is issued using the `password` or `client_credentials` grant:
-    ```php
-    use Illuminate\Support\Facades\Http;
+```php
+use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
-        'grant_type' => 'password',
-        'client_id' => 'client-id',
-        'client_secret' => 'client-secret',
-        'username' => 'my@email.com',
-        'password' => 'my-password',
-        'scope' => '*',
-    ]);
-    ```
+$response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
+    'grant_type' => 'password',
+    'client_id' => 'client-id',
+    'client_secret' => 'client-secret',
+    'username' => 'my@email.com',
+    'password' => 'my-password',
+    'scope' => '*',
+]);
+```
 
 <a name="customizing-the-user-type"></a>
 ### Customizing The User Type
@@ -537,92 +535,92 @@ If your application uses more than one [authentication guards](https://laravel.c
 ### Customizing The Username Field
 
 When authenticating using the password grant, **Rinvex OAuth** will use the `email` attribute of your authenticatable model as the "username". However, you may customize this behavior by defining a `findForOAuth` method on your model:
-    ```php
-    namespace App\Models;
+```php
+namespace App\Models;
 
-    use Rinvex\OAuth\Traits\HasApiTokens;
-    use Illuminate\Notifications\Notifiable;
-    use Illuminate\Foundation\Auth\User as Authenticatable;
+use Rinvex\OAuth\Traits\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-    class User extends Authenticatable
+class User extends Authenticatable
+{
+    use HasApiTokens, Notifiable;
+
+    /**
+     * Find the user instance for the given username.
+     *
+     * @param  string  $username
+     * @return \App\Models\User
+     */
+    public function findForOAuth($username)
     {
-        use HasApiTokens, Notifiable;
-
-        /**
-         * Find the user instance for the given username.
-         *
-         * @param  string  $username
-         * @return \App\Models\User
-         */
-        public function findForOAuth($username)
-        {
-            return $this->where('username', $username)->first();
-        }
+        return $this->where('username', $username)->first();
     }
-    ```
+}
+```
 
 <a name="customizing-the-password-validation"></a>
 ### Customizing The Password Validation
 
 When authenticating using the password grant, **Rinvex OAuth** will use the `password` attribute of your model to validate the given password. If your model does not have a `password` attribute or you wish to customize the password validation logic, you can define a `validateForOAuthPasswordGrant` method on your model:
-    ```php
-    namespace App\Models;
+```php
+namespace App\Models;
 
-    use Illuminate\Support\Facades\Hash;
-    use Rinvex\OAuth\Traits\HasApiTokens;
-    use Illuminate\Notifications\Notifiable;
-    use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
+use Rinvex\OAuth\Traits\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-    class User extends Authenticatable
+class User extends Authenticatable
+{
+    use HasApiTokens, Notifiable;
+
+    /**
+     * Validate the password of the user for the OAuth password grant.
+     *
+     * @param  string  $password
+     * @return bool
+     */
+    public function validateForOAuthPasswordGrant($password)
     {
-        use HasApiTokens, Notifiable;
-
-        /**
-         * Validate the password of the user for the OAuth password grant.
-         *
-         * @param  string  $password
-         * @return bool
-         */
-        public function validateForOAuthPasswordGrant($password)
-        {
-            return Hash::check($password, $this->password);
-        }
+        return Hash::check($password, $this->password);
     }
-    ```
+}
+```
 
 <a name="implicit-grant-tokens"></a>
 ## Implicit Grant Tokens
 
 The implicit grant is similar to the authorization code grant; however, the token is returned to the client without exchanging an authorization code. This grant is most commonly used for JavaScript or mobile applications where the client credentials can't be securely stored. You can enable the grant by publishing config file using this command `php artisan rinvex:publish:oauth --resource=config`, then enabling that grant option. It is disabled by default, and not recommended to use since other grants are more secure.
-    ```php
-    'grants' => [
-        'Password' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
-        'Implicit' => ['enabled' => false, 'expire_in' => new DateInterval('P1Y')],
-        'AuthCode' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
-        'RefreshToken' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
-        'PersonalAccess' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
-        'ClientCredentials' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
-    ],
-    ```
+```php
+'grants' => [
+    'Password' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
+    'Implicit' => ['enabled' => false, 'expire_in' => new DateInterval('P1Y')],
+    'AuthCode' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
+    'RefreshToken' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
+    'PersonalAccess' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
+    'ClientCredentials' => ['enabled' => true, 'expire_in' => new DateInterval('P1Y')],
+],
+```
 
 Once the grant has been enabled, developers may use their client ID to request an access token from your application. The consuming application should make a redirect request to your application's `/oauth/authorize` route like so:
-    ```php
-    use Illuminate\Http\Request;
+```php
+use Illuminate\Http\Request;
 
-    Route::get('redirect', function (Request $request) {
-        $request->session()->put('state', $state = Str::random(40));
+Route::get('redirect', function (Request $request) {
+    $request->session()->put('state', $state = Str::random(40));
 
-        $query = http_build_query([
-            'client_id' => 'client-id',
-            'redirect_uri' => 'http://third-party-app.com/callback',
-            'response_type' => 'token',
-            'scope' => 'scope-id-1 scope-id-2',
-            'state' => $state,
-        ]);
+    $query = http_build_query([
+        'client_id' => 'client-id',
+        'redirect_uri' => 'http://third-party-app.com/callback',
+        'response_type' => 'token',
+        'scope' => 'scope-id-1 scope-id-2',
+        'state' => $state,
+    ]);
 
-        return redirect('http://oauth-server-app.com/oauth/authorize?'.$query);
-    });
-    ```
+    return redirect('http://oauth-server-app.com/oauth/authorize?'.$query);
+});
+```
 
 > **Note:** Remember, if you are using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth), you do not need to manually define this route `/oauth/authorize` as it is already defined by the module.
 
@@ -632,51 +630,51 @@ Once the grant has been enabled, developers may use their client ID to request a
 The client credentials grant is suitable for machine-to-machine authentication. For example, you might use this grant in a scheduled job which is performing maintenance tasks over an API.
 
 Before your application can issue tokens via the client credentials grant, you will need to create a client credentials grant client. You may do this using the `--client_credentials` option of the `rinvex:oauth:client` Artisan command:
-    ```shell
-    php artisan rinvex:oauth:client --client_credentials
-    ```
+```shell
+php artisan rinvex:oauth:client --client_credentials
+```
 
 Next, to use this grant type, you need to add the `CheckClientCredentials` middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
-    ```php
-    use Rinvex\OAuth\Http\Middleware\CheckClientCredentials;
+```php
+use Rinvex\OAuth\Http\Middleware\CheckClientCredentials;
 
-    protected $routeMiddleware = [
-        'client' => CheckClientCredentials::class,
-    ];
-    ```
+protected $routeMiddleware = [
+    'client' => CheckClientCredentials::class,
+];
+```
 
 > **Note:** Remember, if you are using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth), you do not need to manually register this middleware `CheckClientCredentials` as it is already registered for you by the module.
 
 Then, attach the middleware to a route:
-    ```php
-    Route::get('orders', function (Request $request) {
-        ...
-    })->middleware('client');
-    ```
+```php
+Route::get('orders', function (Request $request) {
+    ...
+})->middleware('client');
+```
 
 To restrict access to the route to specific scopes, you may provide a comma-delimited list of the required scopes when attaching the `client` middleware to the route:
-    ```php
-    Route::get('/orders', function (Request $request) {
-        // ...
-    })->middleware('client:scope-id-1,scope-id-2');
-    ```
+```php
+Route::get('/orders', function (Request $request) {
+    // ...
+})->middleware('client:scope-id-1,scope-id-2');
+```
 
 <a name="retrieving-tokens"></a>
 ### Retrieving Tokens
 
 To retrieve a token using this grant type, make a request to the `/oauth/token` endpoint:
-    ```php
-    use Illuminate\Support\Facades\Http;
+```php
+use Illuminate\Support\Facades\Http;
 
-    $response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
-        'grant_type' => 'client_credentials',
-        'client_id' => 'client-id',
-        'client_secret' => 'client-secret',
-        'scope' => 'your-scope',
-    ]);
+$response = Http::asForm()->post('http://oauth-server-app.com/oauth/token', [
+    'grant_type' => 'client_credentials',
+    'client_id' => 'client-id',
+    'client_secret' => 'client-secret',
+    'scope' => 'your-scope',
+]);
 
-    return $response->json()['access_token'];
-    ```
+return $response->json()['access_token'];
+```
 
 > **Note:** Remember, if you are using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth), you do not need to manually define this route `/oauth/token` as it is already registered for you by the module.
 
@@ -689,39 +687,39 @@ Sometimes, your users may want to issue access tokens to themselves without goin
 ### Creating A Personal Access Client
 
 Before your application can issue personal access tokens, you will need to create a personal access client. You may do this by executing the `rinvex:oauth:client` Artisan command with the `--personal_access` option. **If you are using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth) and you have already run the `cortex:install:oauth` command, you do not need to run this command:**
-    ```shell
-    php artisan rinvex:oauth:client --personal_access
-    ```
+```shell
+php artisan rinvex:oauth:client --personal_access
+```
 
 After creating your personal access client, place the client's ID and plain-text secret value in your application's `.env` file:
-    ```shell
-    OAUTH_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
-    OAUTH_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
-    ```
+```shell
+OAUTH_PERSONAL_ACCESS_CLIENT_ID="client-id-value"
+OAUTH_PERSONAL_ACCESS_CLIENT_SECRET="unhashed-client-secret-value"
+```
 
 You can also configure this through the config file, by publishing it first using this command `php artisan rinvex:publish:oauth --resource=config`, then updating the relevant option:
-    ```php
-    'personal_access_client' => [
-        'id' => env('OAUTH_PERSONAL_ACCESS_CLIENT_ID'),
-        'secret' => env('OAUTH_PERSONAL_ACCESS_CLIENT_SECRET'),
-    ],
-    ```
+```php
+'personal_access_client' => [
+    'id' => env('OAUTH_PERSONAL_ACCESS_CLIENT_ID'),
+    'secret' => env('OAUTH_PERSONAL_ACCESS_CLIENT_SECRET'),
+],
+```
 
 <a name="managing-personal-access-tokens"></a>
 ### Managing Personal Access Tokens
 
 Once you have created a personal access client, you may issue tokens for a given user using the `createToken` method on the `App\Models\User` model instance. The `createToken` method accepts the name of the token as its first argument and an optional array of [scopes](#token-scopes) as its second argument:
-    ```php
-    use App\Models\User;
+```php
+use App\Models\User;
 
-    $user = User::find(1);
+$user = User::find(1);
 
-    // Creating a token without scopes...
-    $token = $user->createToken('Token Name')->accessToken;
+// Creating a token without scopes...
+$token = $user->createToken('Token Name')->accessToken;
 
-    // Creating a token with scopes...
-    $token = $user->createToken('My Token', ['scope-id-1', 'scope-id-2'])->accessToken;
-    ```
+// Creating a token with scopes...
+$token = $user->createToken('My Token', ['scope-id-1', 'scope-id-2'])->accessToken;
+```
 
 <a name="protecting-routes"></a>
 ## Protecting Routes
@@ -730,34 +728,34 @@ Once you have created a personal access client, you may issue tokens for a given
 ### Via Middleware
 
 **Rinvex OAuth** includes an [authentication guard](https://laravel.com/docs/master/authentication#adding-custom-guards) that will validate access tokens on incoming requests. Once you have configured the `api` guard to use the `oauth` driver, you only need to specify the `auth:api` middleware on any routes that should require a valid access token:
-    ```php
-    Route::get('user', function () {
-        // ...
-    })->middleware('auth:api');
-    ```
+```php
+Route::get('user', function () {
+    // ...
+})->middleware('auth:api');
+```
 
 <a name="multiple-authentication-guards"></a>
 #### Multiple Authentication Guards
 
 If your application authenticates different types of users that perhaps use entirely different Eloquent models, you will likely need to define a guard configuration for each user provider type in your application. This allows you to protect requests intended for specific user providers. For example, given the following guard configuration the `config/auth.php` configuration file:
-    ```php
-    'api:member' => [
-        'driver' => 'oauth',
-        'provider' => 'members',
-    ],
+```php
+'api:member' => [
+    'driver' => 'oauth',
+    'provider' => 'members',
+],
 
-    'api:admin' => [
-        'driver' => 'oauth',
-        'provider' => 'admins',
-    ],
-    ```
+'api:admin' => [
+    'driver' => 'oauth',
+    'provider' => 'admins',
+],
+```
 
 The following route will utilize the `api:member` guard, which uses the `members` user provider, to authenticate incoming requests:
-    ```php
-    Route::get('customer', function () {
-        //
-    })->middleware('auth:api:member');
-    ```
+```php
+Route::get('customer', function () {
+    //
+})->middleware('auth:api:member');
+```
 
 > **Note:** For more information on using multiple user providers with **Rinvex OAuth**, please consult the [password grant documentation](#customizing-the-user-type).
 
@@ -765,16 +763,16 @@ The following route will utilize the `api:member` guard, which uses the `members
 ### Passing The Access Token
 
 When calling routes that are protected by **Rinvex OAuth**, your application's API consumers should specify their access token as a `Bearer` token in the `Authorization` header of their request. For example, when using the Guzzle HTTP library:
-    ```php
-    use Illuminate\Support\Facades\Http;
+```php
+use Illuminate\Support\Facades\Http;
 
-    $response = Http::withHeaders([
-        'Accept' => 'application/json',
-        'Authorization' => 'Bearer '.$accessToken,
-    ])->get('https://oauth-server-app.com/api/user');
+$response = Http::withHeaders([
+    'Accept' => 'application/json',
+    'Authorization' => 'Bearer '.$accessToken,
+])->get('https://oauth-server-app.com/api/user');
 
-    return $response->json();
-    ```
+return $response->json();
+```
 
 <a name="token-scopes"></a>
 ## Token Scopes
@@ -794,14 +792,14 @@ That way, you've one centralized place to manage all access permissions to all r
 ### Default Scope
 
 If a client does not request any specific scopes, you may configure your **Rinvex OAuth** server to attach default scope(s) to the token in your config file. First you'll need to publish config file:
-    ```shell
-    php artisan rinvex:publish:oauth --resource=config
-    ```
+```shell
+php artisan rinvex:publish:oauth --resource=config
+```
 
 Then you can update the config option:
-    ```php
-    'default_scope' => null,
-    ```
+```php
+'default_scope' => null,
+```
 
 <a name="assigning-scopes-to-tokens"></a>
 ### Assigning Scopes To Tokens
@@ -810,35 +808,35 @@ Then you can update the config option:
 #### When Requesting Authorization Codes
 
 When requesting an access token using the authorization code grant, consumers should specify their desired scopes as the `scope` query string parameter. The `scope` parameter should be a space-delimited list of scopes:
-    ```php
-    Route::get('redirect', function () {
-        $query = http_build_query([
-            'client_id' => 'client-id',
-            'redirect_uri' => 'http://third-party-client-app.com/oauth/callback',
-            'response_type' => 'code',
-            'scope' => 'scope-id-1 scope-id-2',
-        ]);
+```php
+Route::get('redirect', function () {
+    $query = http_build_query([
+        'client_id' => 'client-id',
+        'redirect_uri' => 'http://third-party-client-app.com/oauth/callback',
+        'response_type' => 'code',
+        'scope' => 'scope-id-1 scope-id-2',
+    ]);
 
-        return redirect('http://oauth-server-app.com/oauth/authorize?'.$query);
-    });
-    ```
+    return redirect('http://oauth-server-app.com/oauth/authorize?'.$query);
+});
+```
 
 <a name="when-issuing-personal-access-tokens"></a>
 #### When Issuing Personal Access Tokens
 
 If you are issuing personal access tokens using the `App\Models\User` model's `createToken` method, you may pass the array of desired scopes as the second argument to the method:
-    ```php
-    $token = $user->createToken('My Token', ['scope-id-1', 'scope-id-2'])->accessToken;
-    ```
+```php
+$token = $user->createToken('My Token', ['scope-id-1', 'scope-id-2'])->accessToken;
+```
 
 <a name="checking-scopes"></a>
 ### Checking Scopes
 
 **Rinvex OAuth** includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, add the following middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
-    ```php
-    'scopes' => \Rinvex\OAuth\Http\Middleware\CheckScopes::class,
-    'scope' => \Rinvex\OAuth\Http\Middleware\CheckForAnyScope::class,
-    ```
+```php
+'scopes' => \Rinvex\OAuth\Http\Middleware\CheckScopes::class,
+'scope' => \Rinvex\OAuth\Http\Middleware\CheckForAnyScope::class,
+```
 
 > **Note:** Remember, if you are using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth), you do not need to manually register these middleware `CheckScopes` and `CheckForAnyScope` as they're already registered for you by the module.
 
@@ -846,37 +844,37 @@ If you are issuing personal access tokens using the `App\Models\User` model's `c
 #### Check For All Scopes
 
 The `scopes` middleware may be assigned to a route to verify that the incoming request's access token has all of the listed scopes:
-    ```php
-    Route::get('orders', function () {
-        // Access token has both "scope-id-2" and "scope-id-1" scopes...
-    })->middleware(['auth:api', 'scopes:scope-id-2,scope-id-1']);
-    ```
+```php
+Route::get('orders', function () {
+    // Access token has both "scope-id-2" and "scope-id-1" scopes...
+})->middleware(['auth:api', 'scopes:scope-id-2,scope-id-1']);
+```
 
 <a name="check-for-any-scopes"></a>
 #### Check For Any Scopes
 
 The `scope` middleware may be assigned to a route to verify that the incoming request's access token has *at least one* of the listed scopes:
-    ```php
-    Route::get('orders', function () {
-        // Access token has either "scope-id-2" or "scope-id-1" scope...
-    })->middleware(['auth:api', 'scope:scope-id-2,scope-id-1']);
-    ```
+```php
+Route::get('orders', function () {
+    // Access token has either "scope-id-2" or "scope-id-1" scope...
+})->middleware(['auth:api', 'scope:scope-id-2,scope-id-1']);
+```
 
 <a name="checking-scopes-on-a-token-instance"></a>
 #### Checking Scopes On A Token Instance
 
 Once an access token authenticated request has entered your application, you may still check if the token has a given scope as follows:
-    ```php
-    use Illuminate\Http\Request;
+```php
+use Illuminate\Http\Request;
 
-    Route::get('orders', function (Request $request) {
-        $scope = 'scope-id-1';
+Route::get('orders', function (Request $request) {
+    $scope = 'scope-id-1';
 
-        if ($request->user()->token()->abilities->map->getRouteKey()->contains($scope)) {
-            //
-        }
-    });
-    ```
+    if ($request->user()->token()->abilities->map->getRouteKey()->contains($scope)) {
+        //
+    }
+});
+```
 
 <a name="consuming-your-api-with-javascript"></a>
 ## Consuming Your API With JavaScript
@@ -884,30 +882,30 @@ Once an access token authenticated request has entered your application, you may
 When building an API, it can be extremely useful to be able to consume your own API from your JavaScript application. This approach to API development allows your own application to consume the same API that you are sharing with the world. The same API may be consumed by your web application, mobile applications, third-party applications, and any SDKs that you may publish on various package managers.
 
 Typically, if you want to consume your API from your JavaScript application, you would need to manually send an access token to the application and pass it with each request to your application. However, **Rinvex OAuth** includes a middleware that can handle this for you. All you need to do is add the `CreateFreshApiToken` middleware to your `web` middleware group in your `app/Http/Kernel.php` file:
-    ```php
-    'web' => [
-        // Other middleware...
-        \Rinvex\OAuth\Http\Middleware\CreateFreshApiToken::class,
-    ],
-    ```
+```php
+'web' => [
+    // Other middleware...
+    \Rinvex\OAuth\Http\Middleware\CreateFreshApiToken::class,
+],
+```
 
 > **Note:** You should ensure that the `CreateFreshApiToken` middleware is the last middleware listed in your middleware stack.
 
 This middleware will attach a `laravel_token` cookie to your outgoing responses. This cookie contains an encrypted JWT that **Rinvex OAuth** will use to authenticate API requests from your JavaScript application. The JWT has a lifetime equal to your `session.lifetime` configuration value. Now, since the browser will automatically send the cookie with all subsequent requests, you may make requests to your application's API without explicitly passing an access token:
-    ```javascript
-    axios.get('api/user')
-        .then(response => {
-            console.log(response.data);
-        });
-    ```
+```javascript
+axios.get('api/user')
+    .then(response => {
+        console.log(response.data);
+    });
+```
 
 <a name="customizing-the-cookie-name"></a>
 ### Customizing The Cookie Name
 
 If needed, you can customize the `laravel_token` cookie's name using the corresponding config option. First you'll need to publish the config file using this command `php artisan rinvex:publish:oauth --resource=config`, then you can modify as follows:
-    ```php
-    'default_scope' => null,
-    ```
+```php
+'default_scope' => null,
+```
 
 <a name="csrf-protection"></a>
 ### CSRF Protection
