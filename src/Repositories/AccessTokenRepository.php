@@ -74,7 +74,7 @@ class AccessTokenRepository implements AccessTokenRepositoryInterface
      */
     public function revokeAccessToken($tokenId)
     {
-        app('rinvex.oauth.access_token')->where('identifier', $tokenId)->update(['is_revoked' => true]);
+        app('rinvex.oauth.access_token')->where('identifier', $tokenId)->get()->revoke();
     }
 
     /**

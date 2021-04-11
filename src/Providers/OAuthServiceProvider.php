@@ -106,7 +106,7 @@ class OAuthServiceProvider extends ServiceProvider
     {
         $this->app->singleton(AuthorizationServer::class, function () {
             return tap($this->makeAuthorizationServer(), function ($server) {
-                $server->setDefaultScope(config('rinvex.oauth.default_scope'));
+                ! config('rinvex.oauth.default_scope') || $server->setDefaultScope(config('rinvex.oauth.default_scope'));
 
                 foreach (collect(config('rinvex.oauth.grants'))->filter(fn ($args) => $args['enabled']) as $grant => $options) {
                     $makeGrantMethod = "make{$grant}Grant";
