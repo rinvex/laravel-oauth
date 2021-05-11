@@ -96,8 +96,6 @@ class Client extends Model
      */
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
-
         $this->setTable(config('rinvex.oauth.tables.clients'));
         $this->setRules([
             'user_id' => 'required|integer',
@@ -108,6 +106,8 @@ class Client extends Model
             'grant_type' => 'required|string|strip_tags|max:100',
             'is_revoked' => 'sometimes|boolean',
         ]);
+
+        parent::__construct($attributes);
     }
 
     /**

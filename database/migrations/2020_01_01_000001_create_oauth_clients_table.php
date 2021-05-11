@@ -19,7 +19,7 @@ class CreateOauthClientsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('user_type');
-            $table->{$this->jsonable()}('name');
+            $table->json('name');
             $table->string('grant_type', 100);
             $table->string('secret', 100)->nullable();
             $table->text('redirect');
@@ -39,19 +39,5 @@ class CreateOauthClientsTable extends Migration
     public function down(): void
     {
         Schema::dropIfExists('oauth_clients');
-    }
-
-    /**
-     * Get jsonable column data type.
-     *
-     * @return string
-     */
-    protected function jsonable(): string
-    {
-        $driverName = DB::connection()->getPdo()->getAttribute(PDO::ATTR_DRIVER_NAME);
-        $dbVersion = DB::connection()->getPdo()->getAttribute(PDO::ATTR_SERVER_VERSION);
-        $isOldVersion = version_compare($dbVersion, '5.7.8', 'lt');
-
-        return $driverName === 'mysql' && $isOldVersion ? 'text' : 'json';
     }
 }
