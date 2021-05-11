@@ -73,8 +73,6 @@ class AccessToken extends Model
      */
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
-
         $this->setTable(config('rinvex.oauth.tables.access_tokens'));
         $this->setRules([
             'identifier' => 'required|string|strip_tags|max:100',
@@ -85,6 +83,8 @@ class AccessToken extends Model
             'is_revoked' => 'sometimes|boolean',
             'expires_at' => 'nullable|date',
         ]);
+
+        parent::__construct($attributes);
     }
 
     /**
