@@ -97,7 +97,7 @@ class Client extends Model
     public function __construct(array $attributes = [])
     {
         $this->setTable(config('rinvex.oauth.tables.clients'));
-        $this->setRules([
+        $this->mergeRules([
             'user_id' => 'required|integer',
             'user_type' => 'required|string|strip_tags|max:150',
             'name' => 'required|string|strip_tags|max:150',

@@ -67,7 +67,7 @@ class AuthCode extends Model
     public function __construct(array $attributes = [])
     {
         $this->setTable(config('rinvex.oauth.tables.auth_codes'));
-        $this->setRules([
+        $this->mergeRules([
             'identifier' => 'required|string|strip_tags|max:100',
             'user_id' => 'required|integer',
             'user_type' => 'required|string|strip_tags|max:150',

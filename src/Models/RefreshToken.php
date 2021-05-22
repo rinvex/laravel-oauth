@@ -62,7 +62,7 @@ class RefreshToken extends Model
     public function __construct(array $attributes = [])
     {
         $this->setTable(config('rinvex.oauth.tables.refresh_tokens'));
-        $this->setRules([
+        $this->mergeRules([
             'identifier' => 'required|string|strip_tags|max:100',
             'access_token_identifier' => 'required|string|max:100',
             'is_revoked' => 'sometimes|boolean',
