@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v2.0.6] - 2021-05-24
+- Merge rules instead of resetting, to allow adequate model override
+
 ## [v2.0.5] - 2021-05-11
 - Fix constructor initialization order (fill attributes should come next after merging fillables & rules)
 - Drop old MySQL versions support that doesn't support json columns
@@ -55,6 +58,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v1.0.0 - 2020-12-12
 - Tag first release
 
+[v2.0.6]: https://github.com/rinvex/laravel-oauth/compare/v2.0.5...v2.0.6
 [v2.0.5]: https://github.com/rinvex/laravel-oauth/compare/v2.0.4...v2.0.5
 [v2.0.4]: https://github.com/rinvex/laravel-oauth/compare/v2.0.3...v2.0.4
 [v2.0.3]: https://github.com/rinvex/laravel-oauth/compare/v2.0.2...v2.0.3
