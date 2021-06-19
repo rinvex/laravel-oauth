@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v2.0.7] - 2021-06-20
+- Fix namespace naming convention
+
 ## [v2.0.6] - 2021-05-24
 - Merge rules instead of resetting, to allow adequate model override
 
@@ -58,6 +61,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v1.0.0 - 2020-12-12
 - Tag first release
 
+[v2.0.7]: https://github.com/rinvex/laravel-oauth/compare/v2.0.6...v2.0.7
 [v2.0.6]: https://github.com/rinvex/laravel-oauth/compare/v2.0.5...v2.0.6
 [v2.0.5]: https://github.com/rinvex/laravel-oauth/compare/v2.0.4...v2.0.5
 [v2.0.4]: https://github.com/rinvex/laravel-oauth/compare/v2.0.3...v2.0.4
