@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Repositories;
+namespace Rinvex\Oauth\Repositories;
 
-use Rinvex\OAuth\Bridge\RefreshToken;
+use Rinvex\Oauth\Bridge\RefreshToken;
 use Illuminate\Contracts\Events\Dispatcher;
 use League\OAuth2\Server\Entities\RefreshTokenEntityInterface;
 use League\OAuth2\Server\Repositories\RefreshTokenRepositoryInterface;

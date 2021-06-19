@@ -66,12 +66,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Rinvex\\OAuth\\": "src/"
+            "Rinvex\\Oauth\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Rinvex\\OAuth\\Tests\\": "tests/"
+            "Rinvex\\Oauth\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -85,7 +85,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Rinvex\\OAuth\\Providers\\OAuthServiceProvider"
+                "Rinvex\\Oauth\\Providers\\OAuthServiceProvider"
             ]
         }
     },

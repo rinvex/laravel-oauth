@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Repositories;
+namespace Rinvex\Oauth\Repositories;
 
 use RuntimeException;
 use Illuminate\Support\Str;
-use Rinvex\OAuth\Bridge\User;
+use Rinvex\Oauth\Bridge\User;
 use Illuminate\Contracts\Hashing\Hasher;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\UserRepositoryInterface;

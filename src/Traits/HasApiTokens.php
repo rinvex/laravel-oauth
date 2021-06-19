@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Traits;
+namespace Rinvex\Oauth\Traits;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Rinvex\OAuth\Factories\PersonalAccessTokenFactory;
+use Rinvex\Oauth\Factories\PersonalAccessTokenFactory;
 
 trait HasApiTokens
 {
     /**
      * The current access token for the authentication user.
      *
-     * @var \Rinvex\OAuth\Models\AccessToken
+     * @var \Rinvex\Oauth\Models\AccessToken
      */
     protected $accessToken;
 
@@ -39,7 +39,7 @@ trait HasApiTokens
     /**
      * Get the current access token being used by the user.
      *
-     * @return \Rinvex\OAuth\Models\AccessToken|null
+     * @return \Rinvex\Oauth\Models\AccessToken|null
      */
     public function token()
     {
@@ -54,7 +54,7 @@ trait HasApiTokens
      *
      * @throws \Illuminate\Contracts\Container\BindingResolutionException
      *
-     * @return \Rinvex\OAuth\PersonalAccessTokenResult
+     * @return \Rinvex\Oauth\PersonalAccessTokenResult
      */
     public function createToken($name, array $scopes = [])
     {
@@ -64,7 +64,7 @@ trait HasApiTokens
     /**
      * Set the current access token for the user.
      *
-     * @param \Rinvex\OAuth\Models\AccessToken $accessToken
+     * @param \Rinvex\Oauth\Models\AccessToken $accessToken
      *
      * @return $this
      */

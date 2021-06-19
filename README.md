@@ -80,11 +80,11 @@ Installing **Rinvex OAuth** does NOT require Laravel Passport. It is in fact a c
     php artisan rinvex:migrate:oauth
     ```
 
-3. Add the `Rinvex\OAuth\Traits\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
+3. Add the `Rinvex\Oauth\Traits\HasApiTokens` trait to your `App\Models\User` model. This trait will provide a few helper methods to your model which allow you to inspect the authenticated user's token and scopes:
     ```php
     namespace App\Models;
 
-    use Rinvex\OAuth\Traits\HasApiTokens;
+    use Rinvex\Oauth\Traits\HasApiTokens;
     use Illuminate\Foundation\Auth\User as Authenticatable;
 
     class User extends Authenticatable
@@ -166,7 +166,7 @@ By default, **Rinvex OAuth** issues long-lived access tokens that expire after o
 
 You are free to extend the models used internally by **Rinvex OAuth** by defining your own model and extending the corresponding **Rinvex OAuth** model:
 ```php
-use Rinvex\OAuth\Models\Client as BaseClient;
+use Rinvex\Oauth\Models\Client as BaseClient;
 
 class Client extends BaseClient
 {
@@ -177,10 +177,10 @@ class Client extends BaseClient
 After defining your model, you may instruct **Rinvex OAuth** to use your custom model via config options `rinvex.oauth.models`:
 ```php
 'models' => [
-    'client' => \Rinvex\OAuth\Models\Client::class,
-    'auth_code' => \Rinvex\OAuth\Models\AuthCode::class,
-    'access_token' => \Rinvex\OAuth\Models\AccessToken::class,
-    'refresh_token' => \Rinvex\OAuth\Models\RefreshToken::class,
+    'client' => \Rinvex\Oauth\Models\Client::class,
+    'auth_code' => \Rinvex\Oauth\Models\AuthCode::class,
+    'access_token' => \Rinvex\Oauth\Models\AccessToken::class,
+    'refresh_token' => \Rinvex\Oauth\Models\RefreshToken::class,
 ],
 ```
 
@@ -257,7 +257,7 @@ php artisan cortex:publish:oauth --resource=views
 
 Sometimes you may wish to skip the authorization prompt, such as when authorizing a first-party client. You may accomplish this by [extending the `Client` model](#overriding-default-models) and defining a `skipsAuthorization` method. If `skipsAuthorization` returns `true` the client will be approved and the user will be redirected back to the `redirect_uri` immediately:
 ```php
-use Rinvex\OAuth\Models\Client as BaseClient;
+use Rinvex\Oauth\Models\Client as BaseClient;
 
 class Client extends BaseClient
 {
@@ -329,15 +329,15 @@ This `/oauth/token` route will return a JSON response containing `access_token`,
 <a name="revoking-tokens"></a>
 ### Revoking Tokens
 
-You may revoke access token by using the `revoke` method on the `Rinvex\OAuth\Models\AccessToken`.
+You may revoke access token by using the `revoke` method on the `Rinvex\Oauth\Models\AccessToken`.
 ```php
 app('rinvex.oauth.access_token')->where('identifier', $tokenId)->get()->revoke();
 ```
 
-Alternatively, you can achieve the same result directly by using the `revokeAccessToken` method on the `Rinvex\OAuth\Repositories\AccessTokenRepository`.
+Alternatively, you can achieve the same result directly by using the `revokeAccessToken` method on the `Rinvex\Oauth\Repositories\AccessTokenRepository`.
 ```php
-use Rinvex\OAuth\Repositories\AccessTokenRepository;
-use Rinvex\OAuth\Repositories\RefreshTokenRepository;
+use Rinvex\Oauth\Repositories\AccessTokenRepository;
+use Rinvex\Oauth\Repositories\RefreshTokenRepository;
 
 // Revoke an access token...
 $accessTokenRepository = app(AccessTokenRepository::class);
@@ -346,7 +346,7 @@ $accessTokenRepository->revokeAccessToken($tokenId);
 
 > **Note:** Revoking access token, will revoke all associated refresh tokens as well.
 
-You may revoke a specific refresh token by using the `revoke` method on the `Rinvex\OAuth\Models\RefreshToken`.
+You may revoke a specific refresh token by using the `revoke` method on the `Rinvex\Oauth\Models\RefreshToken`.
 ```php
 app('rinvex.oauth.refresh_token')->where('identifier', $tokenId)->get()->revoke();
 ```
@@ -538,7 +538,7 @@ When authenticating using the password grant, **Rinvex OAuth** will use the `ema
 ```php
 namespace App\Models;
 
-use Rinvex\OAuth\Traits\HasApiTokens;
+use Rinvex\Oauth\Traits\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -567,7 +567,7 @@ When authenticating using the password grant, **Rinvex OAuth** will use the `pas
 namespace App\Models;
 
 use Illuminate\Support\Facades\Hash;
-use Rinvex\OAuth\Traits\HasApiTokens;
+use Rinvex\Oauth\Traits\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -636,7 +636,7 @@ php artisan rinvex:oauth:client --client_credentials
 
 Next, to use this grant type, you need to add the `CheckClientCredentials` middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
 ```php
-use Rinvex\OAuth\Http\Middleware\CheckClientCredentials;
+use Rinvex\Oauth\Http\Middleware\CheckClientCredentials;
 
 protected $routeMiddleware = [
     'client' => CheckClientCredentials::class,
@@ -834,8 +834,8 @@ $token = $user->createToken('My Token', ['scope-id-1', 'scope-id-2'])->accessTok
 
 **Rinvex OAuth** includes two middleware that may be used to verify that an incoming request is authenticated with a token that has been granted a given scope. To get started, add the following middleware to the `$routeMiddleware` property of your `app/Http/Kernel.php` file:
 ```php
-'scopes' => \Rinvex\OAuth\Http\Middleware\CheckScopes::class,
-'scope' => \Rinvex\OAuth\Http\Middleware\CheckForAnyScope::class,
+'scopes' => \Rinvex\Oauth\Http\Middleware\CheckScopes::class,
+'scope' => \Rinvex\Oauth\Http\Middleware\CheckForAnyScope::class,
 ```
 
 > **Note:** Remember, if you are using [**Cortex OAuth**](https://github.com/rinvex/cortex-oauth), you do not need to manually register these middleware `CheckScopes` and `CheckForAnyScope` as they're already registered for you by the module.
@@ -885,7 +885,7 @@ Typically, if you want to consume your API from your JavaScript application, you
 ```php
 'web' => [
     // Other middleware...
-    \Rinvex\OAuth\Http\Middleware\CreateFreshApiToken::class,
+    \Rinvex\Oauth\Http\Middleware\CreateFreshApiToken::class,
 ],
 ```
 

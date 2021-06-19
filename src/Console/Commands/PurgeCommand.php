@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Console\Commands;
+namespace Rinvex\Oauth\Console\Commands;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;

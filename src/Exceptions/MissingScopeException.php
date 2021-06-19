@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Exceptions;
+namespace Rinvex\Oauth\Exceptions;
 
 use Illuminate\Support\Arr;
 use Illuminate\Auth\Access\AuthorizationException;

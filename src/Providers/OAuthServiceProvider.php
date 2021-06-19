@@ -2,46 +2,46 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Providers;
+namespace Rinvex\Oauth\Providers;
 
 use DateInterval;
 use Illuminate\Support\Str;
-use Rinvex\OAuth\Models\Client;
+use Rinvex\Oauth\Models\Client;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\RequestGuard;
-use Rinvex\OAuth\Models\AuthCode;
+use Rinvex\Oauth\Models\AuthCode;
 use Illuminate\Auth\Events\Logout;
 use League\OAuth2\Server\CryptKey;
-use Rinvex\OAuth\Guards\TokenGuard;
-use Rinvex\OAuth\OAuthUserProvider;
+use Rinvex\Oauth\Guards\TokenGuard;
+use Rinvex\Oauth\OAuthUserProvider;
 use Illuminate\Support\Facades\Auth;
-use Rinvex\OAuth\Models\AccessToken;
+use Rinvex\Oauth\Models\AccessToken;
 use Illuminate\Support\Facades\Event;
-use Rinvex\OAuth\Models\RefreshToken;
+use Rinvex\Oauth\Models\RefreshToken;
 use Illuminate\Support\Facades\Cookie;
-use Rinvex\OAuth\Grants\AuthCodeGrant;
-use Rinvex\OAuth\Grants\PasswordGrant;
+use Rinvex\Oauth\Grants\AuthCodeGrant;
+use Rinvex\Oauth\Grants\PasswordGrant;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Rinvex\Support\Traits\ConsoleTools;
 use League\OAuth2\Server\ResourceServer;
-use Rinvex\OAuth\Grants\RefreshTokenGrant;
-use Rinvex\OAuth\Grants\PersonalAccessGrant;
+use Rinvex\Oauth\Grants\RefreshTokenGrant;
+use Rinvex\Oauth\Grants\PersonalAccessGrant;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\ImplicitGrant;
-use Rinvex\OAuth\Repositories\UserRepository;
-use Rinvex\OAuth\Console\Commands\KeysCommand;
-use Rinvex\OAuth\Repositories\ScopeRepository;
-use Rinvex\OAuth\Console\Commands\PurgeCommand;
-use Rinvex\OAuth\Grants\ClientCredentialsGrant;
-use Rinvex\OAuth\Repositories\ClientRepository;
-use Rinvex\OAuth\Console\Commands\ClientCommand;
-use Rinvex\OAuth\Console\Commands\MigrateCommand;
-use Rinvex\OAuth\Console\Commands\PublishCommand;
-use Rinvex\OAuth\Repositories\AuthCodeRepository;
-use Rinvex\OAuth\Console\Commands\RollbackCommand;
-use Rinvex\OAuth\Repositories\AccessTokenRepository;
-use Rinvex\OAuth\Repositories\RefreshTokenRepository;
+use Rinvex\Oauth\Repositories\UserRepository;
+use Rinvex\Oauth\Console\Commands\KeysCommand;
+use Rinvex\Oauth\Repositories\ScopeRepository;
+use Rinvex\Oauth\Console\Commands\PurgeCommand;
+use Rinvex\Oauth\Grants\ClientCredentialsGrant;
+use Rinvex\Oauth\Repositories\ClientRepository;
+use Rinvex\Oauth\Console\Commands\ClientCommand;
+use Rinvex\Oauth\Console\Commands\MigrateCommand;
+use Rinvex\Oauth\Console\Commands\PublishCommand;
+use Rinvex\Oauth\Repositories\AuthCodeRepository;
+use Rinvex\Oauth\Console\Commands\RollbackCommand;
+use Rinvex\Oauth\Repositories\AccessTokenRepository;
+use Rinvex\Oauth\Repositories\RefreshTokenRepository;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -123,7 +123,7 @@ class OAuthServiceProvider extends ServiceProvider
     /**
      * Create and configure an instance of the personal access grant.
      *
-     * @return \Rinvex\OAuth\Grants\PersonalAccessGrant
+     * @return \Rinvex\Oauth\Grants\PersonalAccessGrant
      */
     protected function makePersonalAccessGrant()
     {

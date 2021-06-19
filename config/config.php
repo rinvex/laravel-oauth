@@ -42,10 +42,10 @@ return [
 
     // Models
     'models' => [
-        'client' => \Rinvex\OAuth\Models\Client::class,
-        'auth_code' => \Rinvex\OAuth\Models\AuthCode::class,
-        'access_token' => \Rinvex\OAuth\Models\AccessToken::class,
-        'refresh_token' => \Rinvex\OAuth\Models\RefreshToken::class,
+        'client' => \Rinvex\Oauth\Models\Client::class,
+        'auth_code' => \Rinvex\Oauth\Models\AuthCode::class,
+        'access_token' => \Rinvex\Oauth\Models\AccessToken::class,
+        'refresh_token' => \Rinvex\Oauth\Models\RefreshToken::class,
     ],
 
     /*

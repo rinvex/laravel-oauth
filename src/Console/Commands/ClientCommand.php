@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Console\Commands;
+namespace Rinvex\Oauth\Console\Commands;
 
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
-use Rinvex\OAuth\Models\Client;
+use Rinvex\Oauth\Models\Client;
 use Rinvex\Support\Traits\ArtisanCanValidateAnswers;
 
 class ClientCommand extends Command
@@ -191,7 +191,7 @@ class ClientCommand extends Command
     /**
      * Output the client's ID and secret key.
      *
-     * @param \Rinvex\OAuth\Models\Client $client
+     * @param \Rinvex\Oauth\Models\Client $client
      *
      * @return void
      */

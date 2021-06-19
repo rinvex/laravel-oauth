@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Repositories;
+namespace Rinvex\Oauth\Repositories;
 
-use Rinvex\OAuth\Bridge\Client;
+use Rinvex\Oauth\Bridge\Client;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
 
 class ClientRepository implements ClientRepositoryInterface
@@ -53,7 +53,7 @@ class ClientRepository implements ClientRepositoryInterface
     /**
      * Determine if the given client can handle the given grant type.
      *
-     * @param \Rinvex\OAuth\Models\Client $record
+     * @param \Rinvex\Oauth\Models\Client $record
      * @param string                      $grantType
      *
      * @return bool

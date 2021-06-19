@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Http\Middleware;
+namespace Rinvex\Oauth\Http\Middleware;
 
 use Closure;
 use Nyholm\Psr7\Factory\Psr17Factory;
@@ -69,7 +69,7 @@ abstract class CheckCredentials
      * @param \Psr\Http\Message\ServerRequestInterface $psr
      * @param array                                    $scopes
      *
-     * @throws \Rinvex\OAuth\Exceptions\MissingScopeException|\Illuminate\Auth\AuthenticationException
+     * @throws \Rinvex\Oauth\Exceptions\MissingScopeException|\Illuminate\Auth\AuthenticationException
      *
      * @return void
      */
@@ -85,7 +85,7 @@ abstract class CheckCredentials
     /**
      * Validate token credentials.
      *
-     * @param \Rinvex\OAuth\Models\AccessToken $accessToken
+     * @param \Rinvex\Oauth\Models\AccessToken $accessToken
      *
      * @throws \Illuminate\Auth\AuthenticationException
      *
@@ -96,10 +96,10 @@ abstract class CheckCredentials
     /**
      * Validate token scopes.
      *
-     * @param \Rinvex\OAuth\Models\AccessToken $accessToken
+     * @param \Rinvex\Oauth\Models\AccessToken $accessToken
      * @param array                            $scopes
      *
-     * @throws \Rinvex\OAuth\Exceptions\MissingScopeException
+     * @throws \Rinvex\Oauth\Exceptions\MissingScopeException
      *
      * @return void
      */
