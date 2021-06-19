@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Factories;
+namespace Rinvex\Oauth\Factories;
 
 use Carbon\Carbon;
 use Firebase\JWT\JWT;

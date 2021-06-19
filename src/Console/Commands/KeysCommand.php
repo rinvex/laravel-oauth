@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Console\Commands;
+namespace Rinvex\Oauth\Console\Commands;
 
 use phpseclib\Crypt\RSA;
 use Illuminate\Support\Arr;

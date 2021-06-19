@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Factories;
+namespace Rinvex\Oauth\Factories;
 
 use RuntimeException;
 use Nyholm\Psr7\Response;
 use Nyholm\Psr7\ServerRequest;
-use Rinvex\OAuth\Models\Client;
+use Rinvex\Oauth\Models\Client;
 use Lcobucci\JWT\Parser as JwtParser;
 use Illuminate\Database\Eloquent\Model;
-use Rinvex\OAuth\PersonalAccessTokenResult;
+use Rinvex\Oauth\PersonalAccessTokenResult;
 use Psr\Http\Message\ServerRequestInterface;
 use League\OAuth2\Server\AuthorizationServer;
 
@@ -51,7 +51,7 @@ class PersonalAccessTokenFactory
      * @param string                              $name
      * @param array                               $scopes
      *
-     * @return \Rinvex\OAuth\PersonalAccessTokenResult
+     * @return \Rinvex\Oauth\PersonalAccessTokenResult
      */
     public function make(Model $user, $name, array $scopes = [])
     {
@@ -78,7 +78,7 @@ class PersonalAccessTokenFactory
      *
      * @throws \RuntimeException
      *
-     * @return \Rinvex\OAuth\Models\Client
+     * @return \Rinvex\Oauth\Models\Client
      */
     public function personalAccessClient()
     {
@@ -98,7 +98,7 @@ class PersonalAccessTokenFactory
     /**
      * Create a request instance for the given client.
      *
-     * @param \Rinvex\OAuth\Models\Client         $client
+     * @param \Rinvex\Oauth\Models\Client         $client
      * @param \Illuminate\Database\Eloquent\Model $user
      * @param array                               $scopes
      *
@@ -139,7 +139,7 @@ class PersonalAccessTokenFactory
      *
      * @param array $response
      *
-     * @return \Rinvex\OAuth\Models\AccessToken
+     * @return \Rinvex\Oauth\Models\AccessToken
      */
     protected function findAccessToken(array $response)
     {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Models;
+namespace Rinvex\Oauth\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
@@ -145,7 +145,7 @@ class Client extends Model
      *
      * @param \Illuminate\Database\Eloquent\Model $user
      *
-     * @return \Rinvex\OAuth\Models\AccessToken|null
+     * @return \Rinvex\Oauth\Models\AccessToken|null
      */
     public function getValidToken($user)
     {
@@ -162,7 +162,7 @@ class Client extends Model
      *
      * @param \Illuminate\Database\Eloquent\Model $user
      *
-     * @return \Rinvex\OAuth\Models\AccessToken|null
+     * @return \Rinvex\Oauth\Models\AccessToken|null
      */
     public function findValidToken($user)
     {

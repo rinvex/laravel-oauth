@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Grants;
+namespace Rinvex\Oauth\Grants;
 
 use DateInterval;
 use League\OAuth2\Server\RequestEvent;

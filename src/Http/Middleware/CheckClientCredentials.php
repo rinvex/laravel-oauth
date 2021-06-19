@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Http\Middleware;
+namespace Rinvex\Oauth\Http\Middleware;
 
 use Illuminate\Auth\AuthenticationException;
-use Rinvex\OAuth\Exceptions\MissingScopeException;
+use Rinvex\Oauth\Exceptions\MissingScopeException;
 
 class CheckClientCredentials extends CheckCredentials
 {
     /**
      * Validate token credentials.
      *
-     * @param \Rinvex\OAuth\Models\AccessToken $accessToken
+     * @param \Rinvex\Oauth\Models\AccessToken $accessToken
      *
      * @throws \Illuminate\Auth\AuthenticationException
      *
@@ -28,10 +28,10 @@ class CheckClientCredentials extends CheckCredentials
     /**
      * Validate token credentials.
      *
-     * @param \Rinvex\OAuth\Models\AccessToken $accessToken
+     * @param \Rinvex\Oauth\Models\AccessToken $accessToken
      * @param array                            $scopes
      *
-     * @throws \Rinvex\OAuth\Exceptions\MissingScopeException
+     * @throws \Rinvex\Oauth\Exceptions\MissingScopeException
      *
      * @return void
      */

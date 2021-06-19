@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Http\Middleware;
+namespace Rinvex\Oauth\Http\Middleware;
 
 use Illuminate\Auth\AuthenticationException;
-use Rinvex\OAuth\Exceptions\MissingScopeException;
+use Rinvex\Oauth\Exceptions\MissingScopeException;
 
 class CheckForAnyScope
 {
@@ -16,7 +16,7 @@ class CheckForAnyScope
      * @param \Closure                 $next
      * @param mixed                    ...$scopes
      *
-     * @throws \Illuminate\Auth\AuthenticationException|\Rinvex\OAuth\Exceptions\MissingScopeException
+     * @throws \Illuminate\Auth\AuthenticationException|\Rinvex\Oauth\Exceptions\MissingScopeException
      *
      * @return \Illuminate\Http\Response
      */

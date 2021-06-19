@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Http\Middleware;
+namespace Rinvex\Oauth\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
-use Rinvex\OAuth\Factories\ApiTokenCookieFactory;
+use Rinvex\Oauth\Factories\ApiTokenCookieFactory;
 
 class CreateFreshApiToken
 {
     /**
      * The API token cookie factory instance.
      *
-     * @var \Rinvex\OAuth\Factories\ApiTokenCookieFactory
+     * @var \Rinvex\Oauth\Factories\ApiTokenCookieFactory
      */
     protected $cookieFactory;
 
@@ -28,7 +28,7 @@ class CreateFreshApiToken
     /**
      * Create a new middleware instance.
      *
-     * @param \Rinvex\OAuth\Factories\ApiTokenCookieFactory $cookieFactory
+     * @param \Rinvex\Oauth\Factories\ApiTokenCookieFactory $cookieFactory
      *
      * @return void
      */

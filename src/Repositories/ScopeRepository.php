@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Repositories;
+namespace Rinvex\Oauth\Repositories;
 
-use Rinvex\OAuth\Bridge\Scope;
+use Rinvex\Oauth\Bridge\Scope;
 use League\OAuth2\Server\Entities\ClientEntityInterface;
 use League\OAuth2\Server\Repositories\ScopeRepositoryInterface;
 

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Rinvex\OAuth\Guards;
+namespace Rinvex\Oauth\Guards;
 
 use Exception;
 use Firebase\JWT\JWT;
 use Illuminate\Http\Request;
-use Rinvex\OAuth\TransientToken;
-use Rinvex\OAuth\OAuthUserProvider;
+use Rinvex\Oauth\TransientToken;
+use Rinvex\Oauth\OAuthUserProvider;
 use Nyholm\Psr7\Factory\Psr17Factory;
 use Illuminate\Cookie\CookieValuePrefix;
 use League\OAuth2\Server\ResourceServer;
@@ -30,7 +30,7 @@ class TokenGuard
     /**
      * The user provider implementation.
      *
-     * @var \Rinvex\OAuth\OAuthUserProvider
+     * @var \Rinvex\Oauth\OAuthUserProvider
      */
     protected $provider;
 
@@ -45,7 +45,7 @@ class TokenGuard
      * Create a new token guard instance.
      *
      * @param \League\OAuth2\Server\ResourceServer       $server
-     * @param \Rinvex\OAuth\OAuthUserProvider            $provider
+     * @param \Rinvex\Oauth\OAuthUserProvider            $provider
      * @param \Illuminate\Contracts\Encryption\Encrypter $encrypter
      *
      * @return void
