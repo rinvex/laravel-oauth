@@ -261,7 +261,7 @@ class OAuthServiceProvider extends ServiceProvider
      */
     protected function makeCryptKey($type)
     {
-        $key = str_replace('\\n', "\n", config("rinvex.oauth.{$type}_key"));
+        $key = str_replace('\\n', "\n", (string) config("rinvex.oauth.{$type}_key"));
 
         if (! $key) {
             $key = 'file://'.KeysCommand::keyPath('oauth-'.$type.'.key');
