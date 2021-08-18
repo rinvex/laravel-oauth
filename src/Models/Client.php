@@ -6,6 +6,7 @@ namespace Rinvex\Oauth\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rinvex\Support\Traits\HasTranslations;
 use Rinvex\Support\Traits\ValidatingTrait;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -125,7 +126,7 @@ class Client extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function authCodes()
+    public function authCodes(): HasMany
     {
         return $this->hasMany(config('rinvex.oauth.models.auth_code'), 'client_id', 'id');
     }
@@ -135,7 +136,7 @@ class Client extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function accessTokens()
+    public function accessTokens(): HasMany
     {
         return $this->hasMany(config('rinvex.oauth.models.access_token'), 'client_id', 'id');
     }

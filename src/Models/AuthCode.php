@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Rinvex\Oauth\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Rinvex\Support\Traits\ValidatingTrait;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -84,9 +85,9 @@ class AuthCode extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function client()
+    public function client(): BelongsTo
     {
-        return $this->belongsTo(config('rinvex.oauth.models.client'));
+        return $this->belongsTo(config('rinvex.oauth.models.client'), 'client_id', 'id', 'client');
     }
 
     /**
