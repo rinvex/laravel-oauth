@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Rinvex\Oauth\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Rinvex\Support\Traits\ValidatingTrait;
 use Silber\Bouncer\Database\Concerns\Authorizable;
 use Silber\Bouncer\Database\Concerns\HasAbilities;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccessToken extends Model
 {
