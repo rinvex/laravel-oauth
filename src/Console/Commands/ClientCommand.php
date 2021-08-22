@@ -62,8 +62,8 @@ class ClientCommand extends Command
     {
         $this->alert('Create Personal Access Client');
 
-        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
-        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
+        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags', 'Default Personal Access Client');
+        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer', 1);
         $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
         $userTypes = array_map('Str::singular', array_keys(config('auth.providers')));
@@ -88,7 +88,7 @@ class ClientCommand extends Command
     }
 
     /**
-     * Create a new password grant client.
+     * Create a new password client.
      *
      * @return void
      */
@@ -96,8 +96,8 @@ class ClientCommand extends Command
     {
         $this->alert('Create Password Client');
 
-        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
-        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
+        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags', 'Default Password Client');
+        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer', 1);
         $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
         $userTypes = array_map('Str::singular', array_keys(config('auth.providers')));
@@ -116,13 +116,13 @@ class ClientCommand extends Command
             'grant_type' => 'password',
         ]);
 
-        $this->info('Password grant client created successfully.');
+        $this->info('Password client created successfully.');
 
         $this->outputClientDetails($client);
     }
 
     /**
-     * Create a client credentials grant client.
+     * Create a client credentials client.
      *
      * @return void
      */
@@ -130,8 +130,8 @@ class ClientCommand extends Command
     {
         $this->alert('Create Client Credentials Client');
 
-        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
-        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
+        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags', 'Default Client Credentials Client');
+        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer', 1);
 
         $userTypes = array_map('Str::singular', array_keys(config('auth.providers')));
         $userType = $this->option('user_type') ?: $this->choice(
@@ -149,7 +149,7 @@ class ClientCommand extends Command
             'grant_type' => 'client_credentials',
         ]);
 
-        $this->info('New client created successfully.');
+        $this->info('Client credentials client created successfully.');
 
         $this->outputClientDetails($client);
     }
@@ -163,8 +163,8 @@ class ClientCommand extends Command
     {
         $this->alert('Create Authorization Code Client');
 
-        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags');
-        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer');
+        $name = $this->option('name') ?: $this->askValid('What should we name the client?', 'name', 'required|string|strip_tags', 'Default Authorization Code Client');
+        $userId = $this->option('user_id') ?: $this->askValid('Which user ID should the client be assigned to?', 'user_id', 'required|integer', 1);
         $redirect = $this->option('redirect_uri') ?: $this->askValid('Where should we redirect the request after authorization?', 'redirect_uri', 'required|string|url|max:1500', url('/auth/callback'));
 
         $userTypes = array_map('Str::singular', array_keys(config('auth.providers')));
@@ -183,7 +183,7 @@ class ClientCommand extends Command
             'grant_type' => 'authorization_code',
         ]);
 
-        $this->info('New client created successfully.');
+        $this->info('Authorization code client created successfully.');
 
         $this->outputClientDetails($client);
     }

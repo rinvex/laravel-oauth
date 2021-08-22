@@ -8,7 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 use Rinvex\Support\Traits\ValidatingTrait;
 use Silber\Bouncer\Database\Concerns\Authorizable;
 use Silber\Bouncer\Database\Concerns\HasAbilities;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AccessToken extends Model
 {
@@ -92,9 +94,9 @@ class AccessToken extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function client()
+    public function client(): BelongsTo
     {
-        return $this->belongsTo(config('rinvex.oauth.models.client'));
+        return $this->belongsTo(config('rinvex.oauth.models.client'), 'client_id', 'id', 'client');
     }
 
     /**
@@ -112,7 +114,7 @@ class AccessToken extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function refreshTokens()
+    public function refreshTokens(): HasMany
     {
         return $this->hasMany(config('rinvex.oauth.models.refresh_token'), 'access_token_identifier', 'identifier');
     }
