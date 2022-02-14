@@ -143,6 +143,6 @@ class PersonalAccessTokenFactory
      */
     protected function findAccessToken(array $response)
     {
-        return app('rinvex.oauth.access_token')->where('identifier', $this->jwt->parse($response['access_token'])->getClaim('jti'));
+        return app('rinvex.oauth.access_token')->where('identifier', $this->jwt->parse($response['access_token'])->claims()->get('jti'));
     }
 }

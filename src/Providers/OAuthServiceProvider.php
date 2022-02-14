@@ -93,6 +93,7 @@ class OAuthServiceProvider extends ServiceProvider
 
         $this->registerAuthorizationServer();
         $this->registerClientRepository();
+        $this->registerJWTParser();
         $this->registerResourceServer();
         $this->registerGuard();
     }
@@ -221,7 +222,7 @@ class OAuthServiceProvider extends ServiceProvider
             $this->app->make(AccessTokenRepository::class),
             $this->app->make(ScopeRepository::class),
             $this->makeCryptKey('private'),
-            app('encrypter')->getKey()
+            config('rinvex.oauth.server_response_type'),
         );
     }
 
@@ -244,11 +245,23 @@ class OAuthServiceProvider extends ServiceProvider
      */
     protected function registerResourceServer()
     {
-        $this->app->singleton(ResourceServer::class, function () {
+        $this->app->singleton(ResourceServer::class, function ($container) {
             return new ResourceServer(
-                $this->app->make(AccessTokenRepository::class),
+                $container->make(AccessTokenRepository::class),
                 $this->makeCryptKey('public')
             );
+        });
+    }
+
+    /**
+     * Register the JWT Parser.
+     *
+     * @return void
+     */
+    protected function registerJWTParser()
+    {
+        $this->app->singleton(Parser::class, function () {
+            return Configuration::forUnsecuredSigner()->parser();
         });
     }
 
@@ -261,7 +274,7 @@ class OAuthServiceProvider extends ServiceProvider
      */
     protected function makeCryptKey($type)
     {
-        $key = str_replace('\\n', "\n", (string) config("rinvex.oauth.{$type}_key"));
+        $key = str_replace('\\n', "\n", config("rinvex.oauth.{$type}_key") ?? '');
 
         if (! $key) {
             $key = 'file://'.KeysCommand::keyPath('oauth-'.$type.'.key');
@@ -280,7 +293,7 @@ class OAuthServiceProvider extends ServiceProvider
         Auth::resolved(function (AuthManager $auth) {
             $auth->extend('oauth', function ($app, $name, array $config) {
                 return tap($this->makeGuard($config), function ($guard) {
-                    $this->app->refresh('request', $guard, 'setRequest');
+                    app()->refresh('request', $guard, 'setRequest');
                 });
             });
         });

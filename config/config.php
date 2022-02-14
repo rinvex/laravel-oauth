@@ -29,6 +29,10 @@ return [
     // Set the default scope(s). Multiple scopes may be specified delimited by spaces.
     'default_scope' => null,
 
+    // Override the default "BearerTokenResponse" to custom schema,
+    // for example to add new extra parameters to support OpenID Connect flow
+    'server_response_type' => null,
+
     // The storage location of the encryption keys.
     'key_path' => env('OAUTH_KEY_PATH'),
 

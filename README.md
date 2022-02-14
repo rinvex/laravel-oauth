@@ -54,7 +54,7 @@
 <a name="introduction"></a>
 ## Introduction
 
-**Rinvex OAuth** provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. **Rinvex OAuth** was inspired by and based on a lightweight modified version of [Laravel Passport](https://laravel.com/docs/master/passport) v10, which is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
+**Rinvex OAuth** provides a full OAuth2 server implementation for your Laravel application in a matter of minutes. **Rinvex OAuth** was inspired by and based on a lightweight modified version of [Laravel Passport](https://laravel.com/docs/master/passport) v10.3.1, which is built on top of the [League OAuth2 server](https://github.com/thephpleague/oauth2-server) that is maintained by Andy Millington and Simon Hamp.
 
 > **Note:** This documentation assumes you are already familiar with OAuth2. If you do not know anything about OAuth2, consider familiarizing yourself with the general [terminology](https://oauth2.thephpleague.com/terminology/) and features of OAuth2 before continuing.
 
