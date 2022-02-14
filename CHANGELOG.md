@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v3.1.0] - 2022-02-14
+- Update composer dependencies to Laravel v9
+- Sync with Laravel Passport v10.3.1
+- Add support for model HasFactory
+
 ## [v3.0.0] - 2021-08-22
 - Drop PHP v7 support, and upgrade rinvex package dependencies to next major version
 
@@ -64,6 +69,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v1.0.0 - 2020-12-12
 - Tag first release
 
+[v3.1.0]: https://github.com/rinvex/laravel-oauth/compare/v3.0.0...v3.1.0
 [v3.0.0]: https://github.com/rinvex/laravel-oauth/compare/v2.0.7...v3.0.0
 [v2.0.7]: https://github.com/rinvex/laravel-oauth/compare/v2.0.6...v2.0.7
 [v2.0.6]: https://github.com/rinvex/laravel-oauth/compare/v2.0.5...v2.0.6
