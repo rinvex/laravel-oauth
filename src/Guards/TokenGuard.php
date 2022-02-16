@@ -252,8 +252,7 @@ class TokenGuard
     {
         return (array) JWT::decode(
             CookieValuePrefix::remove($this->encrypter->decrypt($request->cookie(config('rinvex.oauth.cookie')), config('rinvex.oauth.unserializes_cookies'))),
-            $this->encrypter->getKey(),
-            ['HS256']
+            $this->encrypter->getKey()
         );
     }
 
