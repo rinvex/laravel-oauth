@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Rinvex\Oauth\Console\Commands;
 
-use phpseclib\Crypt\RSA;
+use phpseclib3\Crypt\RSA;
 use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
+use phpseclib\Crypt\RSA as LegacyRSA;
 
 class KeysCommand extends Command
 {
@@ -44,21 +45,21 @@ class KeysCommand extends Command
             $this->error('Encryption keys already exist. Use the --force option to overwrite them.');
 
             return 1;
-        } else {
-            if (class_exists(LegacyRSA::class)) {
-                $keys = (new LegacyRSA)->createKey($this->input ? (int) $this->option('length') : 4096);
-
-                file_put_contents($publicKey, Arr::get($keys, 'publickey'));
-                file_put_contents($privateKey, Arr::get($keys, 'privatekey'));
-            } else {
-                $key = RSA::createKey($this->input ? (int) $this->option('length') : 4096);
-
-                file_put_contents($publicKey, (string) $key->getPublicKey());
-                file_put_contents($privateKey, (string) $key);
-            }
-
-            $this->info('Encryption keys generated successfully.');
         }
+
+        if (class_exists(LegacyRSA::class)) {
+            $keys = (new LegacyRSA())->createKey($this->input ? (int) $this->option('length') : 4096);
+
+            file_put_contents($publicKey, Arr::get($keys, 'publickey'));
+            file_put_contents($privateKey, Arr::get($keys, 'privatekey'));
+        } else {
+            $key = RSA::createKey($this->input ? (int) $this->option('length') : 4096);
+
+            file_put_contents($publicKey, (string) $key->getPublicKey());
+            file_put_contents($privateKey, (string) $key);
+        }
+
+        $this->info('Encryption keys generated successfully.');
 
         return 0;
     }
