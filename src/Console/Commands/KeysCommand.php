@@ -45,6 +45,7 @@ class KeysCommand extends Command
 
             return 1;
         }
+
         if (class_exists(LegacyRSA::class)) {
             $keys = (new LegacyRSA())->createKey($this->input ? (int) $this->option('length') : 4096);
 
