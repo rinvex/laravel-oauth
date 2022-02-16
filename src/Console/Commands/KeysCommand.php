@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Rinvex\Oauth\Console\Commands;
 
-use phpseclib\Crypt\RSA;
+use phpseclib3\Crypt\RSA;
 use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
+use phpseclib\Crypt\RSA as LegacyRSA;
 
 class KeysCommand extends Command
 {
