@@ -74,7 +74,7 @@ class AuthCode extends Model
             'identifier' => 'required|string|strip_tags|max:100',
             'user_id' => 'required|integer',
             'user_type' => 'required|string|strip_tags|max:150',
-            'client_id' => 'required|integer|exists:'.config('rinvex.oauth.tables.clients').',id',
+            'client_id' => 'required|integer|exists:'.config('rinvex.oauth.models.client').',id',
             'is_revoked' => 'sometimes|boolean',
             'expires_at' => 'nullable|date',
         ]);
