@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v3.1.2] - 2022-08-30
+- Update exists and unique validation rules to use models instead of tables
+- Update composer dependencies symfony/http-foundation to ^6.1.0 from ^6.0.0
+
 ## [v3.1.1] - 2022-02-16
 - Fix compatibility issues with firebase/php-jwt v6
 - Fix missing import and wrong phpseclib namespace
@@ -73,6 +77,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v1.0.0 - 2020-12-12
 - Tag first release
 
+[v3.1.2]: https://github.com/rinvex/laravel-oauth/compare/v3.1.1...v3.1.2
 [v3.1.1]: https://github.com/rinvex/laravel-oauth/compare/v3.1.0...v3.1.1
 [v3.1.0]: https://github.com/rinvex/laravel-oauth/compare/v3.0.0...v3.1.0
 [v3.0.0]: https://github.com/rinvex/laravel-oauth/compare/v2.0.7...v3.0.0
