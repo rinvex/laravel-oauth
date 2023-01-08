@@ -42,6 +42,7 @@ use Rinvex\Oauth\Repositories\AuthCodeRepository;
 use Rinvex\Oauth\Console\Commands\RollbackCommand;
 use Rinvex\Oauth\Repositories\AccessTokenRepository;
 use Rinvex\Oauth\Repositories\RefreshTokenRepository;
+use Illuminate\Database\Eloquent\Relations\Relation;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -71,6 +72,14 @@ class OAuthServiceProvider extends ServiceProvider
                 RollbackCommand::class,
             ]);
         }
+       
+        // Map relations
+        Relation::morphMap([
+            'client' => config('rinvex.oauth.models.client'),
+            'auth_code' => config('rinvex.oauth.models.auth_code'),
+            'access_token' => config('rinvex.oauth.models.access_token'),
+            'refresh_token' => config('rinvex.oauth.models.refresh_token'),
+        ]);
     }
 
     /**
