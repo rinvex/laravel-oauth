@@ -6,7 +6,9 @@ namespace Rinvex\Oauth\Console\Commands;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'rinvex:oauth:purge')]
 class PurgeCommand extends Command
 {
     /**
