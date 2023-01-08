@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Rinvex\Oauth\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'rinvex:publish:oauth')]
 class PublishCommand extends Command
 {
     /**

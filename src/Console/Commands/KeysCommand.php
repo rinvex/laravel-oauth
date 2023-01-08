@@ -8,7 +8,9 @@ use phpseclib3\Crypt\RSA;
 use Illuminate\Support\Arr;
 use Illuminate\Console\Command;
 use phpseclib\Crypt\RSA as LegacyRSA;
+use Symfony\Component\Console\Attribute\AsCommand;
 
+#[AsCommand(name: 'rinvex:oauth:keys')]
 class KeysCommand extends Command
 {
     /**

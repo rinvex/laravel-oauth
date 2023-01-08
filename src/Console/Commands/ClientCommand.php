@@ -7,8 +7,10 @@ namespace Rinvex\Oauth\Console\Commands;
 use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Rinvex\Oauth\Models\Client;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Rinvex\Support\Traits\ArtisanCanValidateAnswers;
 
+#[AsCommand(name: 'rinvex:oauth:client')]
 class ClientCommand extends Command
 {
     use ArtisanCanValidateAnswers;
