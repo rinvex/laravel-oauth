@@ -40,9 +40,9 @@ use Rinvex\Oauth\Console\Commands\MigrateCommand;
 use Rinvex\Oauth\Console\Commands\PublishCommand;
 use Rinvex\Oauth\Repositories\AuthCodeRepository;
 use Rinvex\Oauth\Console\Commands\RollbackCommand;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Rinvex\Oauth\Repositories\AccessTokenRepository;
 use Rinvex\Oauth\Repositories\RefreshTokenRepository;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 class OAuthServiceProvider extends ServiceProvider
 {
@@ -72,7 +72,7 @@ class OAuthServiceProvider extends ServiceProvider
                 RollbackCommand::class,
             ]);
         }
-       
+
         // Map relations
         Relation::morphMap([
             'client' => config('rinvex.oauth.models.client'),
