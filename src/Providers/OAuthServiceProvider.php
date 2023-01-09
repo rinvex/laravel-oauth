@@ -231,6 +231,7 @@ class OAuthServiceProvider extends ServiceProvider
             $this->app->make(AccessTokenRepository::class),
             $this->app->make(ScopeRepository::class),
             $this->makeCryptKey('private'),
+            app('encrypter')->getKey(),
             config('rinvex.oauth.server_response_type'),
         );
     }
