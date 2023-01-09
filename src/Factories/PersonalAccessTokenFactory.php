@@ -112,7 +112,7 @@ class PersonalAccessTokenFactory
             'grant_type' => 'personal_access',
             'client_id' => $client->getRouteKey(),
             'client_secret' => $personalAccessClientSecret,
-            'user_id' => $user->getMorphClass().':'.$user->getRouteKey(),
+            'user_id' => $user->getMorphClass().':'.$user->getAuthIdentifier(),
             'scope' => implode(' ', $scopes),
         ]);
     }

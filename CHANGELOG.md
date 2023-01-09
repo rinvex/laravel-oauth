@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v4.0.1] - 2023-01-10
+- Simplify encryption key paths
+- Fix missing AuthorizationServer encryption key parameter
+- Fix user identifier to be like that 'admin:123' where admin is user_type & 123 is user_id
+
 ## [v4.0.0] - 2023-01-09
 - Tweak artisan commands registration
 - Drop PHP v8.0 support and update composer dependencies
@@ -82,6 +87,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v1.0.0 - 2020-12-12
 - Tag first release
 
+[v4.0.1]: https://github.com/rinvex/laravel-oauth/compare/v4.0.0...v4.0.1
 [v4.0.0]: https://github.com/rinvex/laravel-oauth/compare/v3.1.2...v4.0.0
 [v3.1.2]: https://github.com/rinvex/laravel-oauth/compare/v3.1.1...v3.1.2
 [v3.1.1]: https://github.com/rinvex/laravel-oauth/compare/v3.1.0...v3.1.1
