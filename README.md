@@ -117,7 +117,7 @@ When deploying **Rinvex OAuth** to your application's servers for the first time
 php artisan rinvex:oauth:keys
 ```
 
-If necessary, you may define the path where **Rinvex OAuth**'s keys should be loaded from. You may use the `rinvex.oauth.key_path` config option to accomplish this. Typically, this config option is null and the encryption keys are storged in `storage_path` by default.
+Typically, **Rinvex OAuth**'s keys are loaded from `storage_path`. 
 
 <a name="loading-keys-from-the-environment"></a>
 #### Loading Keys From The Environment
@@ -125,19 +125,6 @@ If necessary, you may define the path where **Rinvex OAuth**'s keys should be lo
 Alternatively, you may publish **Rinvex OAuth**'s configuration file using the `rinvex:publish:oauth` Artisan command:
 ```shell
 php artisan rinvex:publish:oauth --resource=config
-```
-
-After the configuration file has been published, you may load your application's encryption keys by defining them as environment variables:
-```shell
-OAUTH_KEY_PATH="./storage/keys"
-
-OAUTH_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
-<private key here>
------END RSA PRIVATE KEY-----"
-
-OAUTH_PUBLIC_KEY="-----BEGIN PUBLIC KEY-----
-<public key here>
------END PUBLIC KEY-----"
 ```
 
 <a name="migration-customization"></a>

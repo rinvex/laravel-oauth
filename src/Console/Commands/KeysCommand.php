@@ -75,10 +75,6 @@ class KeysCommand extends Command
      */
     public static function keyPath($file)
     {
-        $file = ltrim($file, '/\\');
-
-        return config('rinvex.oauth.key_path')
-            ? rtrim(config('rinvex.oauth.key_path'), '/\\').DIRECTORY_SEPARATOR.$file
-            : storage_path($file);
+        return storage_path($file);
     }
 }
