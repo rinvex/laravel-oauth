@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v4.1.0] - 2023-05-02
+- a16518d: Add support for Laravel v11, and drop support for Laravel v9
+- d716e6e: Upgrade league/oauth2-server to v8.5 from v8.3
+- da81753: Upgrade lcobucci/jwt to v5.0 from v4.1
+- 678aed0: Upgrade nesbot/carbon to v2.62 from v2.56
+- 9e4493e: Upgrade nyholm/psr7 to v1.7 from v1.5
+- 3bca59d: Upgrade firebase/php-jwt to v6.4 from v6.0
+- e32b8a1: Upgrade symfony/psr-http-message-bridge to v2.2 from v2.1
+- 391e31a: Update phpunit to v10.1 from v9.5
+- 170ba87: Apply fixes from StyleCI (#11)
+
 ## [v4.0.1] - 2023-01-10
 - Simplify encryption key paths
 - Fix missing AuthorizationServer encryption key parameter
@@ -87,6 +98,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v1.0.0 - 2020-12-12
 - Tag first release
 
+[v4.1.0]: https://github.com/rinvex/laravel-oauth/compare/v4.0.1...v4.1.0
 [v4.0.1]: https://github.com/rinvex/laravel-oauth/compare/v4.0.0...v4.0.1
 [v4.0.0]: https://github.com/rinvex/laravel-oauth/compare/v3.1.2...v4.0.0
 [v3.1.2]: https://github.com/rinvex/laravel-oauth/compare/v3.1.1...v3.1.2
