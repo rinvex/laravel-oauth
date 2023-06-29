@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v4.1.1] - 2023-06-29
+- Refactor resource loading and publishing
+
 ## [v4.1.0] - 2023-05-02
 - a16518d: Add support for Laravel v11, and drop support for Laravel v9
 - d716e6e: Upgrade league/oauth2-server to v8.5 from v8.3
@@ -98,6 +101,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v1.0.0 - 2020-12-12
 - Tag first release
 
+[v4.1.1]: https://github.com/rinvex/laravel-oauth/compare/v4.1.0...v4.1.1
 [v4.1.0]: https://github.com/rinvex/laravel-oauth/compare/v4.0.1...v4.1.0
 [v4.0.1]: https://github.com/rinvex/laravel-oauth/compare/v4.0.0...v4.0.1
 [v4.0.0]: https://github.com/rinvex/laravel-oauth/compare/v3.1.2...v4.0.0
