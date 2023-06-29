@@ -55,10 +55,11 @@ class OAuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Publish Resources
-        $this->publishesConfig('rinvex/laravel-oauth');
-        $this->publishesMigrations('rinvex/laravel-oauth');
-        ! $this->autoloadMigrations('rinvex/laravel-oauth') || $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
+        // Register paths to be published by the publish command.
+        $this->publishConfigFrom(__DIR__.'/../../config/config.php', 'rinvex/oauth');
+        $this->publishMigrationsFrom(__DIR__.'/../../database/migrations', 'rinvex/oauth');
+
+        ! $this->app['config']['rinvex.oauth.autoload_migrations'] || $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
 
         $this->deleteCookieOnLogout();
 
