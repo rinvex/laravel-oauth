@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 
 
+## [v4.1.2] - 2023-07-03
+- Update composer dependencies
+- Replace Carbon\Carbon with Illuminate\Support\Carbon
+- Use canonicalized absolute pathnames for resources
+
 ## [v4.1.1] - 2023-06-29
 - Refactor resource loading and publishing
 
@@ -101,6 +106,7 @@ This project adheres to [Semantic Versioning](CONTRIBUTING.md).
 ## v1.0.0 - 2020-12-12
 - Tag first release
 
+[v4.1.2]: https://github.com/rinvex/laravel-oauth/compare/v4.1.1...v4.1.2
 [v4.1.1]: https://github.com/rinvex/laravel-oauth/compare/v4.1.0...v4.1.1
 [v4.1.0]: https://github.com/rinvex/laravel-oauth/compare/v4.0.1...v4.1.0
 [v4.0.1]: https://github.com/rinvex/laravel-oauth/compare/v4.0.0...v4.0.1

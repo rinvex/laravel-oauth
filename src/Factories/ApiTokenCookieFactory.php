@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Rinvex\Oauth\Factories;
 
-use Carbon\Carbon;
 use Firebase\JWT\JWT;
+use Illuminate\Support\Carbon;
 use Symfony\Component\HttpFoundation\Cookie;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Contracts\Config\Repository as Config;
